@@ -39,10 +39,10 @@ const TopBar = () => {
 
   return (
     <>
-    <div className="bg-blue-900 text-white text-sm py-1 border-b-2 border-gray-200">      
-      <div className="container mx-auto flex justify-between items-center">
+    <div className="bg-blue-900 text-white text-sm py-1 border-gray-200">      
+      <div className="container mx-auto flex justify-center items-center mt-2">
         <div>
-          <span className="font-semibold">{currentDate}</span>
+          <span className="font-semibold mr-6">{currentDate}</span>
         </div>
         <div className="flex items-center spaxe-x-2">
           <Sun size={20} className="text-yellow-500 mr-2"/>
