@@ -5,4 +5,5 @@ export interface Article {
   imageUrl: string;
   source: "Real.gr" | "Instyle" | "Ολο Υγεία" | "The Cars";
   url: string;
+  publishedAt: string;
 }

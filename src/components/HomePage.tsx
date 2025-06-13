@@ -1,14 +1,22 @@
 import NewsCard from "./NewsCard";
 import SecondaryStory from "./SecondaryStory";
+import NewsSection from "./NewsSection";
+import { mockArticles } from "../data/mock-data";
+import { sectionsData } from "../data/sections"; 
+import LatestNewsFeed from "./LatestNewsFeed";
 
 
 const HomePage = () => {
+  
+  const heroArticle = mockArticles[0];
+
   return (
     <>
     <div className="container mx-auto p-4">
+      {/* Hero Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <div className="lg:col-span-2 group" data-size="large">
-          <NewsCard/>
+          <NewsCard article={heroArticle}/>
         </div>
 
         <div className="lg:col-span-1">
@@ -26,17 +34,26 @@ const HomePage = () => {
         </div>
       </div>
 
-      <h2 className="text-2xl text-bold text-gray-800 mb-6 border-b-2 pb-2">
-        Instyle
-      </h2>
+      {/* News Sections */}
+      {sectionsData.map((section) => (
+        <NewsSection
+        key={section.name}
+        logoUrl={section.logoUrl}
+        logoAlt={section.name}
+        articles={section.articles}/>
+      ))}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <NewsCard/>
-        <NewsCard/>
-        <NewsCard/>
-        <NewsCard/>
+      {/* Latest News and Ads Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+        <div className="lg:col-span-2">
+          <LatestNewsFeed articles={mockArticles} />
+        </div>
+        {/* <div className="lg:col-span-1">
+          <div className="sticky top-4 bg-gray-100 p-4 rounded-lg h-96 flex items-center justify-center">
+            <span className="text-gray-500"></span>
+          </div>
+        </div> */}
       </div>
-
     </div>
     </>
   )
