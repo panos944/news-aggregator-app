@@ -9,7 +9,7 @@ The application aggregates news from five prominent Greek websites:
 *   [Instyle.gr](https://www.instyle.gr)
 *   [Olo Ygeia](https://www.oloygeia.gr)
 *   [The Cars](https://www.thecars.gr)
-*   [Real Player](https://www.realplayer.gr)
+*   [Real Player](https://player.real.gr/)
 
 It presents the collected articles in a clean, user-friendly interface, providing a single hub for news consumption. The backend is built with a scalable, layered architecture to support future features like user authentication and personalized feeds.
 
