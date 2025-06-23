@@ -34,7 +34,7 @@ It presents the collected articles in a clean, user-friendly interface, providin
 *   **Node.js:** A JavaScript runtime environment.
 *   **Express.js:** A minimal and flexible Node.js web application framework.
 *   **MongoDB:** A NoSQL database for storing articles and sources.
-*   **Mongoose:** An ODM (Object Data Modeling) library for MongoDB and Node.js.
+*   **Mongoose:** An ODM library for MongoDB and Node.js.
 *   **TypeScript:** Typed superset of JavaScript.
 *   **dotenv:** For managing environment variables.
 
