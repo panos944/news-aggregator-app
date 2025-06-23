@@ -1,4 +1,5 @@
 **News Aggregator App**
+
 This is a full-stack news aggregator application designed to fetch, display, and manage news articles from various Greek media sources. The project features a modern React frontend and a robust Node.js backend with a MongoDB database.
 
 **Description**
