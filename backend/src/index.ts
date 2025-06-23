@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import express, { Express, Request, Response } from "express"
 import cors from "cors"
 import connectDB from "./config/database"
-
+import articleRoutes from "./api/article.routes";
 
 dotenv.config()
 
@@ -16,6 +16,9 @@ const port = process.env.PORT || 8000;
 //Middleware
 app.use(cors()); // Enable cors for all routes
 app.use(express.json()); //Allow the server to accepot JSON
+
+// API Routes
+ app.use("/api/articles", articleRoutes);
 
 
 // A simple test route

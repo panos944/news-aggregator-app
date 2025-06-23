@@ -1,23 +1,20 @@
 import {Schema, model, Document} from "mongoose"
 
-// Article document structure
-
 export interface IArticle extends Document {
   title: string,
-  link: string,
+  url: string,
   source: string,
-  pubDate: string,
-  creater: string,
-  contentSnipet: string;
+  publicationDate: string,
+  description: string;
 }
 
 const ArticleSchema: Schema = new Schema({
   title: {type: String, required: true},
-  link:{type: String, required: true, unique: true},
+  url:{type: String, required: true, unique: true},
   source: {type: String, required: true},
   pubDate: {type: Date, required: true},
-  creator: {type:String, default: "N/A"},
-  contentSnipet: {type: String, default: ""}
+  description: {type: String, default: ""},
+  imageURL: {type: String, requires: true}
 }, {timestamps: true}); // Automatically add createdAt & updatedAt timestamps
 
 
