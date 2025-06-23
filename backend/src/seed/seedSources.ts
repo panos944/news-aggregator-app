@@ -7,10 +7,10 @@ dotenv.config({path: "../.env"});
 
 const sources: Partial<ISource>[] = [
     // rss to be inputed later 
-    {name: "Real.gr", rssUrl: ""},
-    {name: "Instyle", rssUrl: ""},
-    {name: "Ολο Υγεία", rssUrl: ""},
-    {name: "The Cars", rssUrl: ""},
+    {name: "Real.gr", rssUrl: "https://www.real.gr/teleutaies_eidiseis/feed/"},
+    {name: "Instyle", rssUrl: "https://www.instyle.gr/feed/"},
+    {name: "Ολο Υγεία", rssUrl: "https://www.oloygeia.gr/feed/"},
+    {name: "The Cars", rssUrl: "https://www.thecars.gr/feed/"},
     {name: "Real Player", rssUrl: ""},
 ]
 
