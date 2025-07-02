@@ -11,6 +11,8 @@ const connectDB = async () => {
       process.exit(1)
     }
 
+    console.log("Connecting to DB defined by MONGO_URI...")
+
     await mongoose.connect(mongoURI)
     console.log("MongoDB connected...")
   } catch (err:any) {

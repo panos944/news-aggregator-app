@@ -8,10 +8,73 @@ export type CreateArticleDto = {
     imageUrl: string;
 };
 
-// Mapping of raw item from RSS to DTO
-export const fromRssItemToDto = (item:any, sourceName: string): CreateArticleDto => {
-    const imageUrl = item.enclosure?.url || "default_image_url_placeholder.jpg" // Placeholder
+// Mapping of raw item from RSS to the DTO structure as above
+export const fromRssItemToDto = (item: any, sourceName: string): CreateArticleDto => {
+    // Trying multiple ways to extract image URL from RSS feeds
+    let imageUrl = "https://via.placeholder.com/600x400?text=No+Image"; // Default placeholder
 
+     // Method 1: Check mapped media content
+     if (item.mediaContent) {
+        const mediaContent = Array.isArray(item.mediaContent) ? item.mediaContent[0] : item.mediaContent;
+        if (mediaContent && mediaContent.$ && mediaContent.$.url) {
+            imageUrl = mediaContent.$.url;
+        }
+    }
+  
+    // Method 2: Check enclosure (common for media files)
+    if (item.enclosure && item.enclosure.url) {
+        imageUrl = item.enclosure.url;
+    }
+
+    // Method 3: Check media:thumbnail
+    else if (item['media:thumbnail'] && item['media:thumbnail']['$'] && item['media:thumbnail']['$'].url) {
+        imageUrl = item['media:thumbnail']['$'].url;
+    }
+
+    // Method 4: Extract from content field (since it exists)
+    else if (item.content) {
+        const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/i);
+        if (imgMatch && imgMatch[1]) {
+            imageUrl = imgMatch[1];
+        }
+    }
+
+    // Method 5: Extract from description HTML
+    else if (item.description) {
+        const patterns = [
+            /<img[^>]+src="([^">]+)"/i,
+            /<img[^>]+src='([^'>]+)'/i,
+            /src="([^"]*\.(?:jpg|jpeg|png|gif|webp)[^"]*)"]/i,
+        ];
+        
+        for (const pattern of patterns) {
+            const match = item.description.match(pattern);
+            if (match && match[1] && !match[1].includes('data:')) {
+                imageUrl = match[1];
+                break;
+            }
+        }
+    }
+
+    // Method 6: Check for image in various other fields
+    else if (item.image) {
+        imageUrl = typeof item.image === 'string' ? item.image : item.image.url;
+    }
+
+    // Method 7: Check content:encoded (WordPress often uses this)
+    else if (item['content:encoded']) {
+        const imgMatch = item['content:encoded'].match(/<img[^>]+src="([^">]+)"/i);
+        if (imgMatch && imgMatch[1] && !imgMatch[1].includes('data:')) {
+            imageUrl = imgMatch[1];
+        }
+    }
+
+    if (imageUrl === "https://via.placeholder.com/600x400?text=No+Image") {
+        if (sourceName === "Real.gr") {
+            imageUrl = "https://via.placeholder.com/600x400/1e40af/ffffff?text=Real.gr";
+        }
+    }
+  
     return {
         title: item.title,
         url: item.link,
@@ -20,4 +83,4 @@ export const fromRssItemToDto = (item:any, sourceName: string): CreateArticleDto
         description: item.contentSnippet || item['content:encodedSnippet'] || '',
         imageUrl: imageUrl,
     };
-};
+  };

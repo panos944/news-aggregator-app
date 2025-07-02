@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { getArticlesBySource } from "../controllers/article.controller";
+import { getArticlesBySource, getLatestArticles, getArticlesByAllSources } from "../controllers/article.controller";
 
-const articleRoutes = Router();
+const router = Router();
 
-articleRoutes.get("/:sourceName", getArticlesBySource)
+// IMPORTANT: Specific routes must come BEFORE parameterized routes
+router.get("/latest", getLatestArticles);
+router.get("/by-sources", getArticlesByAllSources); 
+router.get("/:sourceName", getArticlesBySource);
 
-export default articleRoutes;
+export default router;

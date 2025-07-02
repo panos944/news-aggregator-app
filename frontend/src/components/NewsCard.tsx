@@ -6,6 +6,12 @@ interface NewsCardProps {
 
 const NewsCard = ({article}: NewsCardProps) => {
 
+    // Reduce the description text for each news item to max 150 words
+    const truncateText = (text: string, maxLength: number = 150) => {
+      if (text.length <= maxLength) return text;
+      return text.substring(0, maxLength).trim() + "..."
+    };
+
   return (
     <>
       <div className="rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
@@ -16,7 +22,7 @@ const NewsCard = ({article}: NewsCardProps) => {
         alt={article.title}/>
         <div className="py-4 flex-grow">
           <h3 className="text-lg font-bold text-grey-800 mb-2">{article.title}</h3>
-          <p className="text-grey-800 text-sm">{article.description}</p>
+          <p className="text-grey-800 text-sm">{truncateText(article.description)}</p>
         </div>
         </a>
       </div>

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "../config/database";
 import Source, {ISource} from "../models/Source";
 
-dotenv.config({path: "../.env"});
+dotenv.config();
 
 const sources: Partial<ISource>[] = [
     // rss to be inputed later 
@@ -11,7 +11,7 @@ const sources: Partial<ISource>[] = [
     {name: "Instyle", rssUrl: "https://www.instyle.gr/feed/"},
     {name: "Ολο Υγεία", rssUrl: "https://www.oloygeia.gr/feed/"},
     {name: "The Cars", rssUrl: "https://www.thecars.gr/feed/"},
-    {name: "Real Player", rssUrl: ""},
+    {name: "Real Player", rssUrl: "https://radioshows.real.gr/TOC.xml"},
 ]
 
 const seedDB = async () => {
