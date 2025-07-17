@@ -14,7 +14,7 @@ const LatestNewsItem = ({ article }: LatestNewsItemProps) => {
 
   return (
     <div className="rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <a href={article.url} target="_blank" rel="noopener noreferrer" className="flex min-h-64">
+      <a href={article.url} target="_blank" rel="noopener noreferrer" className="flex h-64">
         <div className="flex-shrink-0 w-100">
           <img 
             className="w-full h-full object-cover"

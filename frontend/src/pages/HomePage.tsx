@@ -51,7 +51,7 @@ const HomePage = () => {
 
 
   // Display loading and error states
-  if (loading) return <div className="container mx-auto p-4 text-center">Loading articles...</div>;
+  if (loading) return <div className="container mx-auto p-4 text-center"></div>;
   if (error) return <div className="container mx-auto p-4 text-center text-red-500">Error: {error}</div>;
   if (articles.length === 0) return <div className="container mx-auto p-4 text-center">No articles found.</div>;
 
@@ -59,7 +59,7 @@ const HomePage = () => {
   // --Data Slicing--
   const heroArticle = articles[0];
   const secondaryStories = articles.slice(1, 7) // Get the next 6 articles for the secondary section
-  const latestFeedArticles = articles.slice(7, 47) // Get another 20 for the feed
+  const latestFeedArticles = articles.slice(7, 47) // Get another 40 for the feed
 
 
   return (

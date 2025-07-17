@@ -5,6 +5,7 @@ import connectDB from "./config/database";
 import articleRoutes from "./api/article.routes";
 import cron from "node-cron";
 import { articleService } from "./services/articlesServices";
+import authRoutes from "./api/auth.routes"
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 
 // API Routes - Mount the article routes
 app.use("/api/articles", articleRoutes);
+app.use("/api/auth", authRoutes)
 
 // Test route
 app.get("/", (req: Request, res: Response) => {

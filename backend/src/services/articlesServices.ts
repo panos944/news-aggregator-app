@@ -12,14 +12,17 @@ class ArticleService {
     private readonly rssService: RssService
   ) {}
 
+  // Find latest articles
   public async getLatestArticles(): Promise<IArticle[]> {
     return this.articleRepository.findLatest()
   }
 
+  // First articles by source
   public async getArticlesBySource(sourceName:string): Promise<IArticle[]> {
     return this.articleRepository.findBySource(sourceName)
   }
 
+    // Find all articles regardless
   public async getArticlesByAllSources(): Promise<{ [key: string]: IArticle[] }> {
     const sources = await this.sourceRepository.findAll();
     
@@ -34,7 +37,7 @@ class ArticleService {
     }
       return result;
   }
-
+  
     // Method that orchestrates the fetching process
   public async fetchAndSaveFromAllSources(): Promise<void> {
     console.log("Fetching articles from sources")
