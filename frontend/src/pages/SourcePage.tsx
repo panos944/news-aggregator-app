@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import type { Article } from "../types/news";
-import ArticleCard from "../components/ArticleCard";
 import NewsCard from "../components/NewsCard";
 import LatestNewsFeed from "../components/LatestNewsFeed";
 import SecondaryStory from "../components/SecondaryStory";
@@ -41,7 +40,6 @@ const SourcePage = () => {
       setError(null);
       
       try {
-        console.log(`Fetching articles for: ${sourceName}`);
         const response = await fetch(`http://localhost:8000/api/articles/${encodeURIComponent(sourceName)}`);
         
         if (!response.ok) {
@@ -49,7 +47,6 @@ const SourcePage = () => {
         }
         
         const data: Article[] = await response.json();
-        console.log(`Received ${data.length} articles`);
         setArticles(data);
       } catch (e: any) {
         console.error('Fetch error:', e);

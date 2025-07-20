@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { authService } from '../services/authService';
 
-// Types for authentication state
+// Types for our authentication state
 export interface User {
   id: string;
   email: string;
@@ -32,8 +33,7 @@ export interface RegisterData {
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-
-// AuthProvider component that wraps the app
+// AuthProvider component that wraps your app
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
@@ -58,8 +58,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
       } catch (error) {
         // If parsing fails, clear invalid data
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth_user');
+        authService.logout();
         setAuthState(prev => ({ ...prev, loading: false }));
       }
     } else {
@@ -70,78 +69,61 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Login function
   const login = async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await authService.login({ email, password });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.success && response.token && response.user) {
         // Store token and user data
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('auth_user', JSON.stringify(data.user));
+        localStorage.setItem('auth_token', response.token);
+        localStorage.setItem('auth_user', JSON.stringify(response.user));
         
         // Update state
         setAuthState({
           isAuthenticated: true,
-          user: data.user,
-          token: data.token,
+          user: response.user,
+          token: response.token,
           loading: false,
         });
 
-        return { success: true, message: data.message };
+        return { success: true, message: response.message };
       } else {
-        return { success: false, message: data.message };
+        return { success: false, message: response.message };
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      return { success: false, message: 'Network error. Please try again.' };
+      return { success: false, message: error.message || 'Network error. Please try again.' };
     }
   };
 
   // Register function
   const register = async (userData: RegisterData): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch('http://localhost:8000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+      const response = await authService.register(userData);
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.success && response.token && response.user) {
         // Auto-login after successful registration
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('auth_user', JSON.stringify(data.user));
+        localStorage.setItem('auth_token', response.token);
+        localStorage.setItem('auth_user', JSON.stringify(response.user));
         
         setAuthState({
           isAuthenticated: true,
-          user: data.user,
-          token: data.token,
+          user: response.user,
+          token: response.token,
           loading: false,
         });
 
-        return { success: true, message: data.message };
+        return { success: true, message: response.message };
       } else {
-        return { success: false, message: data.message };
+        return { success: false, message: response.message };
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error);
-      return { success: false, message: 'Network error. Please try again.' };
+      return { success: false, message: error.message || 'Network error. Please try again.' };
     }
   };
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
+    authService.logout();
     setAuthState({
       isAuthenticated: false,
       user: null,

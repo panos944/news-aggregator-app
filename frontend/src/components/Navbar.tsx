@@ -1,15 +1,25 @@
 import MobileMenu from "./MobileMenu";
 import { useState } from "react";
-import { MenuIcon } from "lucide-react";
+import { LogOut, MenuIcon, User } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {user, logout} = useAuth()
+
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false)
+  }
+
+  const handleLogout = () => {
+    logout();
+  }
 
   return(
     <>
       <nav className="shadow-md bg-blue-900 p-2">
-        <div className="flex justify-between container mx-auto py-4 items-center">
+        <div className="flex justify-center lg:justify-between container mx-auto py-4 items-center px-4">
           <a href="/" className="text-3xl font-bold">
             <span className="text-white">Real</span>
             <span className="text-white mx-1">Group</span>
@@ -31,23 +41,31 @@ const Navbar = () => {
           </div>
 
           <div className="text-yellow-500 space-x-4 font-bold hidden lg:flex items-center">
-            <a href="">Login</a>
-            <span>|</span>
-            <a href="" className="bg-yellow-500 text-blue-900 font-bold py-2 px-4 rounded-md hover:bg-yellow-400">Register</a>
+            <div>
+              <User size={18} className="text-white"/>
+              <span className="text-white text-sm">
+                {user?.firstName} {user?.lastName}
+              </span>
+            </div>
+            <span className="text-white">|</span>
+            <button onClick={handleLogout} className="flex items-center space-x-1 bg-red-600 text-white py-2 px-4
+            rounded-md hover:bg-red-700 transition-colors">
+              <LogOut size={14}/>
+              <span className="text-sm">Αποσύνδεση</span>
+            </button>
           </div>
 
           <button 
-            className="lg:hidden"
+            className="lg:hidden absolute right-4 flex items-center justify-center"
             onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <MenuIcon className="text-white h-6 w-6" />
           </button>
         </div>   
 
-        <MobileMenu isOpen={isMenuOpen}/>
+        <MobileMenu isOpen={isMenuOpen} onClose={closeMobileMenu} user={user} onLogout = {handleLogout}/>
       </nav>
     </>
   )
-
 }
 
 export default Navbar;

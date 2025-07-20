@@ -1,35 +1,54 @@
+import { LogOut, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface MobileMenuProps {
   isOpen: boolean;
+  onClose: () => void;
+  user: any;
+  onLogout: () => void
 }
 
 
-const MobileMenu = ({isOpen} : MobileMenuProps) => {
+const MobileMenu = ({isOpen, onClose, user, onLogout} : MobileMenuProps) => {
     if(!isOpen) {
       return null; // when not open do not render
+    }
+
+    const handleLinkClick = () => {
+      onClose(); //
+    }
+
+    const handleLogout = () => {
+      onLogout();
+      onClose();
     }
 
     return (
     <>
 
     <div className="lg:hidden">
-      <div className="font-bold text-white flex flex-col items-center py-3 divide-y">
-        <Link to="/" className="hover:text-yellow-500 transition-colors">Home</Link>
-        <span className="text-white">|</span>
-        <Link to="/source/real" className="hover:text-yellow-500 transition-colors">Real.gr</Link>
-        <span className="text-white">|</span>
-        <Link to="/source/instyle" className="hover:text-yellow-500 transition-colors">Instyle</Link>
-        <span className="text-white">|</span>
-        <Link to="/source/oloygeia" className="hover:text-yellow-500 transition-colors">Ολο Υγεία</Link>
-        <span className="text-white"> |</span>
-        <Link to="/source/thecars" className="hover:text-yellow-500 transition-colors">The Cars</Link>
-        <span className="text-white"> |</span>
-        <Link to="/source/realplayer" className="hover:text-yellow-500 transition-colors">Realplayer</Link>
+      <div className="font-bold text-white flex flex-col items-center py-3 space-y-4">
+        <Link to="/" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Home</Link>
+        <Link to="/source/real" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Real.gr</Link>
+        <Link to="/source/instyle" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Instyle</Link>
+        <Link to="/source/oloygeia" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Ολο Υγεία</Link>
+        <Link to="/source/thecars" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">The Cars</Link>
+        <Link to="/source/realplayer" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Realplayer</Link>
 
-
-        <a href="" className="w-full text-center py-3 text-white hover:bg-yellow-500 transition-colors">Login</a>
-        <a href="" className="block px-3 py-2 mt-3 rounded-md text-base font-medium bg-yellow-500 text-blue-900">Register</a>
+        {/* User info */}
+        <div className="flex items-center space-x-2 text-center">
+          <User size={16} className="text-yellow-500"/>
+          <span className="text-sm">
+            {user?.firstName} {user?.lastName}
+          </span>
+        {/* Logout */}
+          <button
+          onClick={handleLogout}
+          className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium bg-red-600 text-white
+          hover:bg-red-800 transition-colors">
+            <LogOut size={16}/>
+          </button>
+        </div>
       </div>
     </div>
     </>

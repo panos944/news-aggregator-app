@@ -23,7 +23,7 @@ class ArticleService {
   }
 
     // Find all articles regardless
-  public async getArticlesByAllSources(): Promise<{ [key: string]: IArticle[] }> {
+  public async getArticlesByAllSources(limitPerSource: number = 4): Promise<{ [key: string]: IArticle[] }> {
     const sources = await this.sourceRepository.findAll();
     
     const result: { [key: string]: IArticle[] } = {};
@@ -32,7 +32,7 @@ class ArticleService {
       const articles = await this.articleRepository.findBySource(source.name);
       
       if (articles.length > 0) {
-        result[source.name] = articles.slice(0, 4);
+        result[source.name] = articles.slice(0, limitPerSource);
       }
     }
       return result;

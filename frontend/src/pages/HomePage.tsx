@@ -55,12 +55,22 @@ const HomePage = () => {
   if (error) return <div className="container mx-auto p-4 text-center text-red-500">Error: {error}</div>;
   if (articles.length === 0) return <div className="container mx-auto p-4 text-center">No articles found.</div>;
 
-
-  // --Data Slicing--
+  // SMART ARTICLE DISTRIBUTION
   const heroArticle = articles[0];
-  const secondaryStories = articles.slice(1, 7) // Get the next 6 articles for the secondary section
-  const latestFeedArticles = articles.slice(7, 47) // Get another 40 for the feed
-
+  const secondaryStories = articles.slice(1, 5); // Next 6 articles for secondary section
+  
+  // Calculate articles used in news sections and exclude them from feed
+  const articlesUsedInSections = Object.values(articlesBySource).flat();
+  const usedArticleUrls = new Set([
+    heroArticle.url,
+    ...secondaryStories.map(article => article.url),
+    ...articlesUsedInSections.map(article => article.url)
+  ]);
+  
+  // Latest feed gets remaining articles not shown in other sections
+  const latestFeedArticles = articles
+    .filter(article => !usedArticleUrls.has(article.url))
+    .slice(0, 50); // Show up to 50 remaining articles
 
   return (
     <>

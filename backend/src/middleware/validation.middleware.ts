@@ -39,14 +39,14 @@ export const validateRegistration = [
     .trim()
     .isLength({ min: 1, max: 50 })
     .withMessage('First name must be between 1 and 50 characters')
-    .matches(/^[a-zA-ZάέήίόύώΑΈΉΊΌΎΏΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω\s]+$/)
+    .matches(/^[a-zA-ZάέήίόύώΆΈΉΊΌΎΏΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψως\s]+$/)
     .withMessage('First name can only contain letters and spaces'),
     
   body('lastName')
     .trim()
     .isLength({ min: 1, max: 50 })
     .withMessage('Last name must be between 1 and 50 characters')
-    .matches(/^[a-zA-ZάέήίόύώΑΈΉΊΌΎΏΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω\s]+$/)
+    .matches(/^[a-zA-ZάέήίόύώΆΈΉΊΌΎΏΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψως\s]+$/)
     .withMessage('Last name can only contain letters and spaces'),
     
   handleValidationErrors
