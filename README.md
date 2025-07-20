@@ -2,40 +2,40 @@
 
 A full-stack MERN news aggregator application designed to fetch, display, and manage news articles from various Greek media sources. Features modern React frontend, robust Node.js backend with MongoDB, complete authentication system, and comprehensive testing.
 
-## 🌟 Key Features
+## Key Features
 
-✅ **Complete Authentication System**
+**Complete Authentication System**
 - JWT-based user registration and login
 - Protected routes and middleware
 - Password hashing with bcrypt
 - Role-based access control
 
-✅ **Centralized News Feed**
+**Centralized News Feed**
 - View articles from multiple sources in one place
 - Source-specific filtering and browsing
 - Real-time RSS feed parsing and image extraction
 
-✅ **Modern Architecture**
+**Modern Architecture**
 - Layered backend architecture (Controllers, Services, Repositories, DTOs)
 - RESTful API with comprehensive documentation
 - TypeScript throughout for type safety
 
-✅ **Comprehensive Testing**
+**Comprehensive Testing**
 - Backend unit tests (Jest, Supertest)
 - Frontend component tests (Vitest, Testing Library)
 - 85%+ test coverage
 
-✅ **API Documentation**
+**API Documentation**
 - Interactive Swagger/OpenAPI documentation
 - Try-it-out functionality for all endpoints
 - Authentication examples and schemas
 
-✅ **Production Ready**
+**Production Ready**
 - Environment-based configuration
 - Error handling and validation
 - Mobile-responsive design
 
-## 📰 News Sources
+## News Sources
 
 The application aggregates news from five prominent Greek websites:
 - [Real.gr](https://www.real.gr) - General news
@@ -44,7 +44,7 @@ The application aggregates news from five prominent Greek websites:
 - [The Cars](https://www.thecars.gr) - Automotive news
 - [Real Player](https://player.real.gr/) - Radio news
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 19** with TypeScript
@@ -64,7 +64,7 @@ The application aggregates news from five prominent Greek websites:
 - **Jest** + **Supertest** for testing
 - **Swagger** for API documentation
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 news-aggregator-app/
@@ -89,7 +89,7 @@ news-aggregator-app/
       └── tests/ # Unit tests
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ 
@@ -131,7 +131,7 @@ news-aggregator-app/
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/api-docs
 
-## 🧪 Testing
+## Testing
 
 - **Vitest** for unit testing
 - **Testing Library** for component testing
