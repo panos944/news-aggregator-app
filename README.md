@@ -81,12 +81,12 @@ news-aggregator-app/
 │   └── docs/               # API examples
 └── frontend/               # React client application
     ├──src/
-      ├── components/ # React components
-      ├── contexts/ # React Context providers
-      ├── pages/ # Page components
-      ├── services/ # API service functions
-      ├── types/ # TypeScript definitions
-      └── tests/ # Unit tests
+      ├── components/       # React components
+      ├── contexts/         # React Context providers
+      ├── pages/            # Page components
+      ├── services/         # API service functions
+      ├── types/            # TypeScript definitions
+      └── tests/            # Unit tests
 ```
 
 ## Getting Started
