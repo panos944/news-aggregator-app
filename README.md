@@ -1,6 +1,6 @@
 # News Aggregator App
 
-A full-stack MERN news aggregator application designed to fetch, display, and manage news articles from various Greek media sources. Features modern React frontend, robust Node.js backend with MongoDB, complete authentication system, and comprehensive testing.
+A full-stack MERN news aggregator application designed to fetch, display, and manage news articles from various Greek media sources. Features modern React frontend, robust Node.js backend with MongoDB, complete authentication system, comprehensive testing and implemented with Typescript.
 
 ## Key Features
 
