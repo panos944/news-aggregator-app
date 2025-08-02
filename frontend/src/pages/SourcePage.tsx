@@ -4,10 +4,13 @@ import type { Article } from "../types/news";
 import NewsCard from "../components/NewsCard";
 import LatestNewsFeed from "../components/LatestNewsFeed";
 import SecondaryStory from "../components/SecondaryStory";
+import TopBar from "../components/TopBar";
+import Navbar from "../components/Navbar";
 import { logos } from "../data/logo-data";
 
 const SourcePage = () => {
-  const { sourceId } = useParams<{ sourceId: string }>();
+  // Fix: Change sourceId to sourceName to match the route parameter
+  const { sourceName: sourceId } = useParams<{ sourceName: string }>();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +25,7 @@ const SourcePage = () => {
       'realgr': 'Real.gr',
       'instyle': 'Instyle', 
       'oloygeia': 'Ολο Υγεία',
+      'oλουγεια': 'Ολο Υγεία', // Add Greek character version
       'thecars': 'The Cars',
       'realplayer': 'Real Player'
     };
@@ -103,46 +107,50 @@ const SourcePage = () => {
   const latestArticles = articles.slice(7);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <img 
-        src={currentSource.imageUrl} 
-        alt={`${currentSource.name} Logo`} 
-        className="h-16 mb-4 mx-auto"
-      />
+    <>
+      <TopBar />
+      <Navbar />
+      <div className="container mx-auto px-4 py-8">
+        <img 
+          src={currentSource.imageUrl} 
+          alt={`${currentSource.name} Logo`} 
+          className="h-16 mb-4 mx-auto"
+        />
 
-      {prominentArticle ? (
-        <>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div className="lg:col-span-2 group" data-size="large">
-              <NewsCard article={prominentArticle}/>
-            </div>
+        {prominentArticle ? (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+              <div className="lg:col-span-2 group" data-size="large">
+                <NewsCard article={prominentArticle}/>
+              </div>
 
-            <div className="lg:col-span-1">
-              <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
-                Περισσότερα
-              </h3>
-              <div className="flex flex-col">
-                {secondaryArticles.map((article) => (
-                  <SecondaryStory key={article.id || article.url} title={article.title}/>
-                ))}
+              <div className="lg:col-span-1">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
+                  Περισσότερα
+                </h3>
+                <div className="flex flex-col">
+                  {secondaryArticles.map((article) => (
+                    <SecondaryStory key={article.id || article.url} title={article.title}/>
+                  ))}
+                </div>
               </div>
             </div>
+            
+            {latestArticles.length > 0 && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+                <div className="lg:col-span-2">
+                  <LatestNewsFeed articles={latestArticles}/>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-xl text-gray-500">No articles found for {currentSource.name}</p>
           </div>
-          
-          {latestArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-              <div className="lg:col-span-2">
-                <LatestNewsFeed articles={latestArticles}/>
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center py-16">
-          <p className="text-xl text-gray-500">No articles found for {currentSource.name}</p>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

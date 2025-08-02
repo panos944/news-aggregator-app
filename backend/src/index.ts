@@ -8,7 +8,7 @@ import { articleService } from "./services/articlesServices";
 import authRoutes from "./api/auth.routes"
 import swaggerUI from "swagger-ui-express"
 import { swaggerSpec } from "./config/swagger";
-import { InitializationService } from "./services/initialisation.service";
+import { InitializationService } from "../src/services/initialisation.service";
 
 dotenv.config();
 
@@ -22,7 +22,6 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, {
   customSiteTitle: 'News Aggregator API Documentation'
 }));
 
-
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
@@ -31,18 +30,15 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
-
 
 // API Routes
 app.use("/api/articles", articleRoutes);
 app.use("/api/auth", authRoutes)
 
-
-// Test  route
+// Health check route
 app.get("/", (req: Request, res: Response) => {
   res.json({
     message: "News Aggregator API is running",
@@ -50,7 +46,6 @@ app.get("/", (req: Request, res: Response) => {
     timestamp: new Date().toISOString()
   });
 });
-
 
 // Auto-initialization on startup
 const initializeApp = async () => {
@@ -66,14 +61,13 @@ const initializeApp = async () => {
     await articleService.fetchAndSaveFromAllSources();
     console.log('Initial article fetch completed');
     
-    console.log('Application ready to serve requests');
+    console.log('Application ready to serve requests!');
     
   } catch (error) {
     console.error('Failed to initialize application:', error);
     process.exit(1); // Exit if initialization fails
   }
 };
-
 
 // Automatic RSS updates every 30 minutes
 cron.schedule('*/30 * * * *', async () => {
@@ -85,7 +79,6 @@ cron.schedule('*/30 * * * *', async () => {
     console.error('Scheduled update failed:', error);
   }
 });
-
 
 // Start server
 app.listen(port, async () => {

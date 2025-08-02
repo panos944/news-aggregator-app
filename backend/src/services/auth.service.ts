@@ -130,6 +130,35 @@ class AuthService {
   }
 
   /**
+   * Handle Google OAuth login/signup
+   */
+  async handleGoogleAuth(user: IUser): Promise<AuthResponse> {
+    try {
+      // Generate JWT token for the Google authenticated user
+      const token = generateToken(user);
+
+      return {
+        success: true,
+        message: 'Google authentication successful',
+        user: {
+          id: (user._id as any).toString(),
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role
+        },
+        token
+      };
+    } catch (error) {
+      console.error('Google auth service error:', error);
+      return {
+        success: false,
+        message: 'Google authentication failed. Please try again.'
+      };
+    }
+  }
+
+  /**
    * Get user profile by ID
    */
   async getUserProfile(userId: string): Promise<{ success: boolean; user?: any; message: string }> {
@@ -175,6 +204,14 @@ class AuthService {
         return {
           success: false,
           message: 'User not found'
+        };
+      }
+
+      // Check if user has a password (not a Google OAuth user)
+      if (!user.password) {
+        return {
+          success: false,
+          message: 'Cannot change password for Google OAuth users'
         };
       }
 

@@ -2,12 +2,13 @@ import { Schema, model, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
 
-// Inteface defining the structure of a User document
+// Interface defining the structure of a User document
 export interface IUser extends Document {
     email: string;
-    password: string;
+    password?: string; // Optional for Google OAuth users
     firstName: string;
     lastName: string;
+    googleId?: string; // Add Google ID for OAuth users
     role: 'user' | 'admin';
     isActive: boolean;
     createdAt: Date;
@@ -31,9 +32,18 @@ const UserSchema: Schema = new Schema({
 
     password: {
         type: String,
-        required: [true, "Password is required"],
+        required: function(this: IUser) {
+            // Password is required only if googleId is not present
+            return !this.googleId;
+        },
         minlength: [6, "Password must be at least 6 characters long"]
         },
+
+    googleId: {
+        type: String,
+        sparse: true, // Allows multiple null values while maintaining uniqueness for non-null values
+        unique: true
+    },
     
     firstName: {
         type: String,
@@ -67,8 +77,8 @@ const UserSchema: Schema = new Schema({
 
 // PRE-SAVE MIDDLEWARE: Hash password before saving to database
 UserSchema.pre("save", async function(next) {
-    // Only hash password if it's been modified
-    if (!this.isModified("password")) return next()
+    // Only hash password if it's been modified and exists
+    if (!this.isModified("password") || !this.password) return next()
 
     try {
         // Generate salt and hash password
@@ -83,6 +93,7 @@ UserSchema.pre("save", async function(next) {
 
 // Instance Method: Compare provided password with stored hash
 UserSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
+    if (!this.password) return false; // For Google OAuth users without passwords
     return bcrypt.compare(candidatePassword, this.password)
 };
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { authService } from "../services/auth.service";
+import { IUser } from "../models/User";
 
 class AuthController {
 
@@ -23,7 +24,7 @@ class AuthController {
                 res.status(400).json(result)
             }
         } catch (error) {
-            console.error("Resiter controller error", error)
+            console.error("Register controller error", error)
             res.status(500).json ({
                 success: false,
                 message: "Server error during registration"
@@ -32,7 +33,7 @@ class AuthController {
     }
 
 
-    // Post /api/auth/login
+    // POST /api/auth/login
     // Login existing user
     async login(req: Request, res: Response) : Promise<void> {
         try {
@@ -51,6 +52,37 @@ class AuthController {
                 success: false,
                 message: 'Server error during login'
             })
+        }
+    }
+
+    // GET /api/auth/google/callback
+    // Handle Google OAuth callback
+    async googleCallback(req: Request, res: Response): Promise<void> {
+        try {
+            const user = req.user as IUser;
+            
+            if (!user) {
+                // Redirect to frontend with error
+                const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+                res.redirect(`${frontendUrl}/login?error=auth_failed`);
+                return;
+            }
+
+            const result = await authService.handleGoogleAuth(user);
+
+            if (result.success && result.token) {
+                // Redirect to frontend with token
+                const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+                res.redirect(`${frontendUrl}/auth/callback?token=${result.token}&user=${encodeURIComponent(JSON.stringify(result.user))}`);
+            } else {
+                // Redirect to frontend with error
+                const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+                res.redirect(`${frontendUrl}/login?error=auth_failed`);
+            }
+        } catch (error) {
+            console.error("Google callback error", error);
+            const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+            res.redirect(`${frontendUrl}/login?error=server_error`);
         }
     }
 

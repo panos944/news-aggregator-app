@@ -1,35 +1,39 @@
-import { useState } from "react";
-import HomePage from "./pages/HomePage"
-import Navbar from "./components/Navbar"
-import TopBar from "./components/TopBar"
-import Footer from "./components/Footer"
-import LoginForm from "./components/LoginForm"
-import RegisterForm from "./components/RegisterForm"
-import { AuthProvider } from "./contexts/AuthContext"
-import { Route, Routes } from "react-router-dom"
-import SourcePage from "./pages/SourcePage"
-import PrivateRoute from "./components/PrivateRoute";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import HomePage from './pages/HomePage';
+import SourcePage from './pages/SourcePage';
+import AuthCallback from '../src/pages/AuthCallbackPage';
+import './App.css';
 
 function App() {
-
-
   return (
     <AuthProvider>
-      <PrivateRoute>
-        <TopBar/>
-        <Navbar/>
-        <main>
+      <Router>
+        <div className="App">
           <Routes>
-            {/* Home Page */}
-            <Route path="/" element={<HomePage/>}/>
-            {/* Other Pages */}
-            <Route path="/source/:sourceId" element={<SourcePage/>}/>
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route 
+              path="/" 
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/source/:sourceName" 
+              element={
+                <PrivateRoute>
+                  <SourcePage/>
+                </PrivateRoute>
+              } 
+            />
           </Routes>
-        </main>
-        <Footer/>
-      </PrivateRoute>
+        </div>
+      </Router>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

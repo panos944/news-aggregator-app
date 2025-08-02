@@ -1,5 +1,5 @@
 // backend/src/__tests__/models/User.test.ts
-import User, { IUser } from '../models/User';
+import User from '../models/User';
 import bcrypt from 'bcryptjs';
 
 describe('User Model', () => {
@@ -35,7 +35,7 @@ describe('User Model', () => {
       const user = new User(userData);
       const savedUser = await user.save();
 
-      const isPasswordValid = await bcrypt.compare('password123', savedUser.password);
+      const isPasswordValid = await bcrypt.compare('password123', savedUser.password!);
       expect(isPasswordValid).toBe(true);
     });
 

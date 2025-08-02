@@ -19,6 +19,7 @@ export interface AuthState {
 
 export interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  loginWithToken: (token: string, user: User) => Promise<{ success: boolean; message: string }>;
   register: (userData: RegisterData) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
 }
@@ -33,7 +34,7 @@ export interface RegisterData {
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// AuthProvider component that wraps your app
+// AuthProvider component that wraps the app
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
@@ -94,6 +95,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  // Login with token (for Google OAuth)
+  const loginWithToken = async (token: string, user: User): Promise<{ success: boolean; message: string }> => {
+    try {
+      // Store token and user data
+      localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_user', JSON.stringify(user));
+      
+      // Update state
+      setAuthState({
+        isAuthenticated: true,
+        user,
+        token,
+        loading: false,
+      });
+
+      return { success: true, message: 'Login successful' };
+    } catch (error: any) {
+      console.error('Token login error:', error);
+      return { success: false, message: 'Authentication failed. Please try again.' };
+    }
+  };
+
   // Register function
   const register = async (userData: RegisterData): Promise<{ success: boolean; message: string }> => {
     try {
@@ -135,6 +158,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const contextValue: AuthContextType = {
     ...authState,
     login,
+    loginWithToken,
     register,
     logout,
   };

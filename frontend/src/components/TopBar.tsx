@@ -25,8 +25,12 @@ const TopBar = () => {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=el`;
 
       try {
-        const response = await axios.get(url)
-        const temp = Math.round(response.data.main.temp)
+        const response = await fetch(url)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        const temp = Math.round(data.main.temp)
         setTemperature(`${temp}°C`)
       } catch (error) {
         console.error("Error fetching weather data:", error);

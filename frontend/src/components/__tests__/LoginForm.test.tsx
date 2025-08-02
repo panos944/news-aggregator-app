@@ -74,7 +74,6 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: /σύνδεση/i }))
 
     await waitFor(() => {
-      // ✅ Look for the exact error message from the component
       expect(screen.getByText('Παρακαλώ συμπληρώστε όλα τα πεδία')).toBeInTheDocument()
     })
   })
