@@ -3,7 +3,7 @@ export interface Article {
   title: string;
   description: string;
   imageUrl: string;
-  source: "Real.gr" | "Instyle" | "Ολο Υγεία" | "The Cars" | "Real Player";
+  source: "Real.gr" | "Instyle" | "Real Kiosk" | "The Cars" | "Real Player";
   url: string;
   publishedAt: string;
 }

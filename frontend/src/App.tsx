@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import SourcePage from './pages/SourcePage';
 import AuthCallback from '../src/pages/AuthCallbackPage';
 import './App.css';
+import RealPlayerAdmin from './components/RealPlayerAdmin';
 
 function App() {
   return (
@@ -15,11 +16,7 @@ function App() {
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route 
               path="/" 
-              element={
-                <PrivateRoute>
-                  <HomePage />
-                </PrivateRoute>
-              } 
+              element={<HomePage />}
             />
             <Route 
               path="/source/:sourceName" 
@@ -29,6 +26,7 @@ function App() {
                 </PrivateRoute>
               } 
             />
+            <Route path="/realplayer-admin" element={<RealPlayerAdmin />} />
           </Routes>
         </div>
       </Router>

@@ -117,7 +117,7 @@ router.get("/by-sources", getArticlesByAllSources);
  *         required: true
  *         schema:
  *           type: string
- *           enum: ["Real.gr", "InStyle.gr", "Olo Ygeia", "The Cars", "Real Player"]
+ *           enum: ["Real.gr", "InStyle.gr", "Real Kiosk", "The Cars", "Real Player"]
  *         description: Name of the news source
  *         example: "Real.gr"
  *       - in: query

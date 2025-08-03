@@ -31,7 +31,7 @@ const MobileMenu = ({isOpen, onClose, user, onLogout} : MobileMenuProps) => {
         <Link to="/" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Home</Link>
         <Link to="/source/real" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Real.gr</Link>
         <Link to="/source/instyle" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Instyle</Link>
-        <Link to="/source/oloygeia" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Ολο Υγεία</Link>
+        <Link to="/source/realkiosk" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Real Kiosk</Link>
         <Link to="/source/thecars" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">The Cars</Link>
         <Link to="/source/realplayer" onClick={handleLinkClick} className="hover:text-yellow-500 transition-colors">Realplayer</Link>
 

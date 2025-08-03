@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import HeroVideo from "./HeroVideo";
 
 interface RegisterFormProps {
@@ -18,6 +19,7 @@ const RegisterForm : React.FC<RegisterFormProps> = ({onToggleMode}) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const {register} = useAuth();
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -61,8 +63,10 @@ const RegisterForm : React.FC<RegisterFormProps> = ({onToggleMode}) => {
 
         if (!result.success) {
             setError(result.message);
+        } else {
+            // Redirect to home page after successful registration
+            navigate('/');
         }
-        // If succesfull, the AuthContext will handle the redirect
     } catch (error) {
         setError("Παρουσιάστηκε σφάλμα. Παρακαλώ δοκιμάστε ξανά.")
     } finally {
@@ -83,131 +87,117 @@ const RegisterForm : React.FC<RegisterFormProps> = ({onToggleMode}) => {
                             </span>
                         </div>
                         <h2 className="mt-6 text-center text-3xl font-bold text-white">
-                            Δημιουργία νέου λογαριασμού
+                            Δημιουργία λογαριασμού
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-300">
-                            ή {' '}
+                            ή{' '}
                             <button 
-                            onClick={onToggleMode}
-                            className="font-medium text-yellow-500 hover:text-yellow-400 transition-colors">
-                                συνδεθείτε στον λογαριασμό σας
+                                onClick={onToggleMode}
+                                className="font-medium text-yellow-500 hover:text-yellow-400 transition-colors">
+                                συνδεθείτε στον υπάρχοντα λογαριασμό σας
                             </button>
                         </p>
                     </div>
 
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                        {/* Update all input fields to have better contrast */}
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label 
-                                    htmlFor="firstname"
-                                    className="block text-sm font-medium text-white">
+                                    <label htmlFor="firstName" className="block text-sm font-medium text-white">
                                         Όνομα
                                     </label>
                                     <input 
-                                    id="firstName"
-                                    name="firstName"
-                                    type="text"
-                                    required
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500
-                                     text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
-                                     focus:z-10 sm:text-sm bg-white bg-opacity-90"
-                                     placeholder="Όνομα"/>
+                                        type="text" 
+                                        name="firstName" 
+                                        id="firstName" 
+                                        required
+                                        value={formData.firstName}
+                                        onChange={handleChange}
+                                        className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300
+                                        placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2
+                                        focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-white bg-opacity-90"
+                                        placeholder="Όνομα"/>
                                 </div>
-
                                 <div>
-                                    <label 
-                                    htmlFor="lastName"
-                                    className="block text-sm font-medium text-white">
+                                    <label htmlFor="lastName" className="block text-sm font-medium text-white">
                                         Επώνυμο
                                     </label>
                                     <input 
-                                    id="lastName"
-                                    name="lastName"
-                                    type="text"
-                                    required
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500
-                                     text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
-                                     focus:z-10 sm:text-sm bg-white bg-opacity-90"
-                                     placeholder="Επώνυμο"/>
+                                        type="text" 
+                                        name="lastName" 
+                                        id="lastName" 
+                                        required
+                                        value={formData.lastName}
+                                        onChange={handleChange}
+                                        className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300
+                                        placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2
+                                        focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-white bg-opacity-90"
+                                        placeholder="Επώνυμο"/>
                                 </div>
                             </div>
-
-                            {/* Apply the same bg-white bg-opacity-90 and text-gray-900 to other inputs */}
-                            {/* ... rest of your form fields with updated styling ... */}
                             <div>
-                                <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-white">
+                                <label htmlFor="email" className="block text-sm font-medium text-white">
                                     Email
                                 </label>
-                                <input
-                                id="email"
-                                name="email"
-                                type="text"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500
-                                text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
-                                focus:z-10 sm:text-sm bg-white bg-opacity-90"
-                                placeholder="Εισάγετε το email σας"/>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    id="email" 
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300
+                                    placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2
+                                    focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-white bg-opacity-90"
+                                    placeholder="Εισάγετε το email σας"/>
                             </div>
-
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium text-white">
                                     Κωδικός
                                 </label>
-                                <input
-                                 id="password"
-                                 name="password"
-                                 type="password"
-                                 required
-                                 value={formData.password}
-                                 onChange={handleChange}
-                                 className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500
-                                 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
-                                 focus:z-10 sm:text-sm bg-white bg-opacity-90"
-                                 placeholder="Εισάγετε τον κωδικό σας (Τουλάχιστον 6 χαρακτήρες)"/>
+                                <input 
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300
+                                    placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2
+                                    focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-white bg-opacity-90"
+                                    placeholder="Δημιουργήστε κωδικό"/>
                             </div>
-
                             <div>
                                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-white">
-                                    Επιβεβαίωση Κωδικού
+                                    Επιβεβαίωση κωδικού
                                 </label>
-                                <input
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                required
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500
-                                text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
-                                focus:z-10 sm:text-sm bg-white bg-opacity-90"
-                                placeholder="Επιβεβαιώστε τον κωδικό σας"/>
+                                <input 
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type="password"
+                                    required
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300
+                                    placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2
+                                    focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-white bg-opacity-90"
+                                    placeholder="Επιβεβαιώστε τον κωδικό"/>
                             </div>
                         </div>
 
-                        {error && (
-                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg bg-opacity-90">
-                                {error}
-                            </div>
-                        )}
-
                         <div>
-                            <button 
-                            type="submit"
-                            disabled={isLoading}
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm mt-6
-                            font-medium rounded-lg text-blue-900 bg-yellow-500 hover:bg-yellow-400 focus:outline-none
-                            focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                                Δημιουργία λογαριασμού
+                            {error && (
+                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg bg-opacity-90 mb-4">
+                                    {error}
+                                </div>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm 
+                                font-medium rounded-lg text-blue-900 bg-yellow-500 hover:bg-yellow-400 focus:outline-none
+                                focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                {isLoading ? "Δημιουργία λογαριασμού..." : "Δημιουργία λογαριασμού"}
                             </button>
                         </div>
                     </form>
@@ -217,4 +207,4 @@ const RegisterForm : React.FC<RegisterFormProps> = ({onToggleMode}) => {
     )
 }
 
-export default RegisterForm
+export default RegisterForm;

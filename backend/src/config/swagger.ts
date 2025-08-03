@@ -22,7 +22,7 @@ const swaggerDefinition: SwaggerDefinition = {
     ## Sources
     - Real.gr
     - InStyle.gr  
-    - Olo Ygeia
+    - Real Kiosk
     - The Cars
     - Real Player
     

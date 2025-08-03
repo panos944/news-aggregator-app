@@ -40,7 +40,7 @@ const Navbar = () => {
                 <span className="text-gray-300">|</span>
                 <Link to="/source/instyle" className="hover:text-yellow-500 transition-colors">Instyle</Link>
                 <span className="text-gray-300">|</span>
-                <Link to="/source/oloygeia" className="hover:text-yellow-500 transition-colors">Ολο Υγεία</Link>
+                <Link to="/source/realkiosk" className="hover:text-yellow-500 transition-colors">Real Kiosk</Link>
                 <span className="text-gray-300">|</span>
                 <Link to="/source/thecars" className="hover:text-yellow-500 transition-colors">The Cars</Link>
                 <span className="text-gray-300">|</span>

@@ -7,18 +7,20 @@ interface LatestNewsFeedProps {
 
 const LatestNewsFeed = ({ articles }: LatestNewsFeedProps) => {
   return (
-    <div className="mt-8">
-      <h2 className="text-3xl font-bold mb-6 border-gray-300 border-b pb-2 text-gray-800">
+    <section className="bg-white">
+      {/* Elegant Section Title */}
+      <h2 className="font-serif text-3xl font-normal text-black mb-8 tracking-tight">
         Τελευταίες Ειδήσεις
       </h2>
-      <div className="flex flex-col gap-y-8">
+      
+      {/* Clean 3-Column Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {articles.map((article) => (
           <LatestNewsItem key={article.id} article={article} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
 export default LatestNewsFeed;
-

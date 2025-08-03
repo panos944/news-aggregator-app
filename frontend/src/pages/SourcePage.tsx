@@ -24,8 +24,7 @@ const SourcePage = () => {
       'real': 'Real.gr',
       'realgr': 'Real.gr',
       'instyle': 'Instyle', 
-      'oloygeia': 'Ολο Υγεία',
-      'oλουγεια': 'Ολο Υγεία', // Add Greek character version
+      'realkiosk': 'Real Kiosk',
       'thecars': 'The Cars',
       'realplayer': 'Real Player'
     };
@@ -77,7 +76,7 @@ const SourcePage = () => {
       <div className="container mx-auto px-4 my-8">
         <h1 className="text-2xl font-bold">404</h1>
         <p>Sorry, this page does not exist</p>
-        <p>Available sources: real, instyle, oloygeia, thecars, realplayer</p>
+        <p>Available sources: real, instyle, realkiosk, thecars, realplayer</p>
       </div>
     );
   }
@@ -130,7 +129,7 @@ const SourcePage = () => {
                 </h3>
                 <div className="flex flex-col">
                   {secondaryArticles.map((article) => (
-                    <SecondaryStory key={article.id || article.url} title={article.title}/>
+                    <SecondaryStory key={article.id || article.url} title={article.title} url={article.url}/>
                   ))}
                 </div>
               </div>

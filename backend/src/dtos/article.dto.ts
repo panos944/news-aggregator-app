@@ -84,3 +84,17 @@ export const fromRssItemToDto = (item: any, sourceName: string): CreateArticleDt
         imageUrl: imageUrl,
     };
   };
+
+import { IRealPlayerProgram } from "../models/RealPlayerProgram";
+import { IArticle } from "../models/Article";
+
+export function fromRealPlayerProgramToDto(program: IRealPlayerProgram): Partial<IArticle> {
+  return {
+    title: program.title,
+    description: program.description,
+    imageUrl: program.imageUrl || "https://player.real.gr/wp-content/uploads/2024/06/Logo-e1718700920635.png",
+    source: "Real Player",
+    url: program.url || "https://player.real.gr",
+    publishedAt: program.startTime
+  };
+}

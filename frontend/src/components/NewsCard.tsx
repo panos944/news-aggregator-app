@@ -5,38 +5,85 @@ interface NewsCardProps {
   hero?: boolean;
 }
 
-const NewsCard = ({article, hero}: NewsCardProps) => {
+const NewsCard = ({ article, hero }: NewsCardProps) => {
+  // Reduce the description text to 1-2 lines maximum
+  const truncateText = (text: string, maxLength: number = 100) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + "...";
+  };
 
-    // Reduce the description text for each news item to max 150 words
-    const truncateText = (text: string, maxLength: number = 150) => {
-      if (text.length <= maxLength) return text;
-      return text.substring(0, maxLength).trim() + "..."
-    };
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  };
 
-    const descriptionMaxLength = hero ? 320 : 150;
+  const estimateReadingTime = (text: string) => {
+    const wordsPerMinute = 200;
+    const wordCount = text.split(' ').length;
+    const readingTime = Math.ceil(wordCount / wordsPerMinute);
+    return readingTime;
+  };
+
+  const descriptionMaxLength = hero ? 120 : 100;
 
   return (
-    <>
-      <div className={`rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col ${hero ? "bg-white" : ""}`}>
-        <a href={article.url} target="_blank" rel="noopener noreferer" className="flex flex-col flex-grow h-full">
-          <div className={hero ? "flex-1 h-full w-full" : ""} style={hero ? { minHeight: 0 } : {}}>
-            <img 
-              className={hero 
-                ? "w-full h-full object-cover max-h-[500px]" 
-                : "w-full h-48 object-cover group-data-[size=large]:h-96 transition-all duration-300"} 
-              src={article.imageUrl} 
-              alt={article.title}
-              style={hero ? { aspectRatio: "16/7", minHeight: 0 } : {}}
-            />
+    <article className="group">
+      <a 
+        href={article.url} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="block"
+      >
+        {/* Large Featured Image */}
+        <div className="mb-6 overflow-hidden">
+          <img 
+            src={article.imageUrl} 
+            alt={article.title}
+            className={`w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${
+              hero 
+                ? "aspect-[16/10]" 
+                : "aspect-[4/3]"
+            }`}
+          />
+        </div>
+
+        {/* Content Section */}
+        <div className="space-y-3">
+          {/* Elegant Serif Headline */}
+          <h3 className={`font-serif font-semibold leading-tight text-black group-hover:opacity-70 transition-opacity duration-300 line-clamp-2 ${
+            hero ? "text-2xl" : "text-xl"
+          }`}>
+            {article.title}
+          </h3>
+
+          {/* Body Text */}
+          <p className="text-base leading-relaxed text-gray-700 line-clamp-3">
+            {truncateText(article.description, descriptionMaxLength)}
+          </p>
+
+          {/* Meta Information */}
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                {article.source}
+              </span>
+              <span className="text-gray-300">•</span>
+              <time className="text-sm text-gray-500 font-serif">
+                {formatDate(article.publishedAt)}
+              </time>
+            </div>
+            <span className="text-sm text-gray-400 font-serif">
+              {estimateReadingTime(article.description)} min read
+            </span>
           </div>
-          <div className="py-4 flex-grow">
-            <h3 className="text-lg font-bold text-grey-800 mb-2">{article.title}</h3>
-            <p className="text-grey-800 text-sm">{truncateText(article.description, descriptionMaxLength)}</p>
-          </div>
-        </a>
-      </div>
-    </>
-  )
-}
+        </div>
+      </a>
+    </article>
+  );
+};
 
 export default NewsCard;

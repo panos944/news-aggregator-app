@@ -9,6 +9,7 @@ import authRoutes from "./api/auth.routes"
 import swaggerUI from "swagger-ui-express"
 import { swaggerSpec } from "./config/swagger";
 import { InitializationService } from "../src/services/initialisation.service";
+import realPlayerRoutes from "./api/realPlayer.routes";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use(express.json());
 // API Routes
 app.use("/api/articles", articleRoutes);
 app.use("/api/auth", authRoutes)
+app.use("/api/realplayer", realPlayerRoutes);
 
 // Health check route
 app.get("/", (req: Request, res: Response) => {

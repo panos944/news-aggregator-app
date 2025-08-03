@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import GoogleLoginButton from "./GoogleLoginButton";
 import HeroVideo from "./HeroVideo";
 
@@ -15,6 +16,7 @@ const LoginForm: React.FC<LoginFormProps> = ({onToggleMode}) => {
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
     const {login} = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,8 +33,10 @@ const LoginForm: React.FC<LoginFormProps> = ({onToggleMode}) => {
             const result = await login(email, password);
             if (!result.success){
                 setError(result.message);
+            } else {
+                // Redirect to home page after successful login
+                navigate('/');
             }
-            // if succesfull, AuthContext will redirect
         } catch (error) {
             setError('Παρουσιάστηκε σφάλμα. Παρακαλώ δοκιμάστε ξανά.');
         } finally {

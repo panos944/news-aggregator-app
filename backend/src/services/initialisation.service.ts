@@ -3,7 +3,7 @@ import Source, { ISource } from "../models/Source";
 const sources: Partial<ISource>[] = [
     { name: "Real.gr", rssUrl: "https://www.real.gr/teleutaies_eidiseis/feed/" },
     { name: "Instyle", rssUrl: "https://www.instyle.gr/feed/" },
-    { name: "Ολο Υγεία", rssUrl: "https://www.oloygeia.gr/feed/" },
+    { name: "Real Kiosk", rssUrl: "https://placeholder-rss-feed.com/realkiosk/feed/" },
     { name: "The Cars", rssUrl: "https://www.thecars.gr/feed/" },
     { name: "Real Player", rssUrl: "https://radioshows.real.gr/TOC.xml" },
 ];

@@ -40,7 +40,7 @@ A full-stack MERN news aggregator application designed to fetch, display, and ma
 The application aggregates news from five prominent Greek websites:
 - [Real.gr](https://www.real.gr) - General news
 - [InStyle.gr](https://www.instyle.gr) - Fashion and lifestyle  
-- [Olo Ygeia](https://www.oloygeia.gr) - Health and wellness
+- [Real Kiosk](https://placeholder-website.com) - News kiosk content
 - [The Cars](https://www.thecars.gr) - Automotive news
 - [Real Player](https://player.real.gr/) - Radio news
 
