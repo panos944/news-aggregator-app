@@ -1,38 +1,49 @@
+@charset "UTF-8";
 @import "tailwindcss";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap');
 
 @layer base {
   :root {
+    /* New Yorker inspired colors */
+    --newyorker-black: #1a1a1a;
+    --newyorker-charcoal: #333333;
+    --newyorker-gray: #666666;
+    --newyorker-light-gray: #e6e6e6;
+    --newyorker-off-white: #fefefe;
+    --newyorker-accent: #d4af37;
+    --newyorker-red: #c41e3a;
+    
     /* shadcn/ui CSS variables */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 0 0% 99%;
+    --foreground: 0 0% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 99%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 45 75% 52%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 62% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 10%;
+    --radius: 0.375rem;
 
-    /* Original theme variables */
-    --primary-900: #1a365d;
-    --accent-500: #f97316;
-    --neutral-50: #fafafa;
-    --neutral-900: #171717;
+    /* Original theme variables updated */
+    --primary-900: var(--newyorker-black);
+    --accent-500: var(--newyorker-accent);
+    --neutral-50: var(--newyorker-off-white);
+    --neutral-900: var(--newyorker-black);
   }
 
   .dark {
@@ -86,10 +97,63 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  line-height: 1.6;
-  color: theme('colors.neutral.900');
-  background-color: theme('colors.neutral.50');
+  line-height: 1.7;
+  color: var(--newyorker-black);
+  background-color: var(--newyorker-off-white);
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 400;
+}
+
+/* New Yorker typography classes */
+.ny-serif {
+  font-family: 'Crimson Text', 'Times New Roman', serif;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.ny-serif-bold {
+  font-family: 'Crimson Text', 'Times New Roman', serif;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ny-lora {
+  font-family: 'Lora', 'Georgia', serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.ny-sans {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.ny-sans-medium {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* New Yorker inspired text colors */
+.ny-text-primary {
+  color: var(--newyorker-black);
+}
+
+.ny-text-secondary {
+  color: var(--newyorker-charcoal);
+}
+
+.ny-text-muted {
+  color: var(--newyorker-gray);
+}
+
+.ny-text-accent {
+  color: var(--newyorker-accent);
+}
+
+.ny-text-red {
+  color: var(--newyorker-red);
 }
 
 /* Modern button styles */
@@ -400,4 +464,211 @@ body {
 .gpu-accelerated {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+}
+
+/* New Yorker-inspired responsive design */
+@media (max-width: 768px) {
+  /* Hero article adjustments */
+  .ny-serif.text-4xl {
+    font-size: 2rem !important; /* Maintain readability */
+    line-height: 1.3 !important;
+  }
+  
+  .ny-serif.text-5xl {
+    font-size: 2.5rem !important;
+    line-height: 1.25 !important;
+  }
+  
+  .ny-serif.text-6xl {
+    font-size: 2.75rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Content spacing adjustments */
+  .max-w-6xl {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Grid adjustments for mobile */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  .grid.grid-cols-1.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  /* Section spacing adjustments */
+  .mb-20 {
+    margin-bottom: 3rem !important;
+  }
+  
+  .mb-16 {
+    margin-bottom: 2.5rem !important;
+  }
+  
+  .mb-12 {
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Typography adjustments for mobile readability */
+  .ny-serif.text-3xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .ny-serif.text-2xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .ny-serif.text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .ny-lora.text-lg {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+  
+  .ny-lora.text-xl {
+    font-size: 1.125rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Extra small screens */
+  .ny-serif.text-6xl {
+    font-size: 2.25rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .ny-serif.text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  .ny-serif.text-4xl {
+    font-size: 1.75rem !important;
+  }
+  
+  /* Hero image height adjustment */
+  .h-\\[70vh\\] {
+    height: 50vh !important;
+  }
+  
+  /* Tighter padding */
+  .max-w-6xl {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Section spacing for very small screens */
+  .mb-20 {
+    margin-bottom: 2.5rem !important;
+  }
+  
+  .mb-16 {
+    margin-bottom: 2rem !important;
+  }
+  
+  .mb-12 {
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* Enhanced mobile menu styles */
+@media (max-width: 1024px) {
+  .lg\\:hidden {
+    background-color: white !important;
+    backdrop-filter: none !important;
+    border-top: 1px solid var(--newyorker-light-gray) !important;
+  }
+}
+
+/* Most Popular Ticker Animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 60s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+.animate-scroll-fast {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll-fast:hover {
+  animation-play-state: paused;
+}
+
+/* Editor's Pick Carousel Styles */
+.editor-picks-carousel .slick-slide {
+  padding: 0 8px;
+}
+
+.editor-picks-carousel .slick-track {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.editor-picks-carousel .slick-list {
+  margin: 0 -8px;
+}
+
+.editor-picks-carousel .slick-arrow {
+  display: none !important;
+}
+
+.editor-picks-carousel {
+  position: relative;
+}
+
+.editor-picks-carousel .slick-slide > div {
+  height: 100%;
+}
+
+.editor-picks-carousel .slick-slide > div > div {
+  height: 100%;
+}
+
+/* Ensure equal height cards in carousel */
+.editor-picks-carousel .slick-track {
+  display: flex;
+  align-items: stretch;
+}
+
+.editor-picks-carousel .slick-slide {
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-picks-carousel .slick-slide > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Mobile menu overlay improvements */
+@media (max-width: 1024px) {
+  .lg\\:hidden {
+    background-color: rgba(30, 58, 138, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
 }

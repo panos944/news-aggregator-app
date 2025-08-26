@@ -38,48 +38,43 @@ const NewsCard = ({ article, hero }: NewsCardProps) => {
         rel="noopener noreferrer" 
         className="block"
       >
-        {/* Large Featured Image */}
-        <div className="mb-6 overflow-hidden">
+        {/* Large Featured Image - Increased width and height */}
+        <div className="mb-6 overflow-hidden rounded-lg">
           <img 
             src={article.imageUrl} 
             alt={article.title}
-            className={`w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${
+            className={`w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.01] ${
               hero 
-                ? "aspect-[16/10]" 
-                : "aspect-[4/3]"
+                ? "h-80 md:h-96" 
+                : "h-64 md:h-80"
             }`}
           />
         </div>
 
         {/* Content Section */}
-        <div className="space-y-3">
+        <div className="space-y-4">
+          {/* Meta Information - Top placement like New Yorker */}
+          <div className="flex items-center gap-3">
+            <span className="ny-sans-medium text-xs ny-text-red uppercase tracking-widest">
+              {article.source}
+            </span>
+            <span className="ny-text-muted">•</span>
+            <time className="ny-sans text-xs ny-text-muted">
+              {formatDate(article.publishedAt)}
+            </time>
+          </div>
+
           {/* Elegant Serif Headline */}
-          <h3 className={`font-serif font-semibold leading-tight text-black group-hover:opacity-70 transition-opacity duration-300 line-clamp-2 ${
-            hero ? "text-2xl" : "text-xl"
+          <h3 className={`ny-serif-bold leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3 ${
+            hero ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
           }`}>
             {article.title}
           </h3>
 
           {/* Body Text */}
-          <p className="text-base leading-relaxed text-gray-700 line-clamp-3">
+          <p className="ny-lora leading-relaxed ny-text-secondary line-clamp-2">
             {truncateText(article.description, descriptionMaxLength)}
           </p>
-
-          {/* Meta Information */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center space-x-3">
-              <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                {article.source}
-              </span>
-              <span className="text-gray-300">•</span>
-              <time className="text-sm text-gray-500 font-serif">
-                {formatDate(article.publishedAt)}
-              </time>
-            </div>
-            <span className="text-sm text-gray-400 font-serif">
-              {estimateReadingTime(article.description)} min read
-            </span>
-          </div>
         </div>
       </a>
     </article>

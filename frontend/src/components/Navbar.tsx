@@ -75,9 +75,10 @@ const Navbar = () => {
             </div>
           </div>
         </div>   
-
-        <MobileMenu isOpen={isMenuOpen} onClose={closeMobileMenu} user={user} onLogout={handleLogout}/>
       </nav>
+
+      {/* Mobile Menu - Rendered outside nav for proper positioning */}
+      <MobileMenu isOpen={isMenuOpen} onClose={closeMobileMenu} user={user} onLogout={handleLogout}/>
     </>
   )
 }
