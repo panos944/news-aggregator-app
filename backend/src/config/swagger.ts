@@ -13,11 +13,11 @@ const swaggerDefinition: SwaggerDefinition = {
     A comprehensive MERN stack application that aggregates news from multiple Greek sources.
     
     ## Features
-    - 🔐 JWT-based authentication
-    - 📰 Multi-source news aggregation
-    - 🏗️ Layered architecture (Controllers, Services, Repositories)
-    - ✅ Comprehensive unit testing
-    - 📚 Interactive API documentation
+    - JWT-based authentication
+    - Multi-source news aggregation
+    - Layered architecture (Controllers, Services, Repositories)
+    - Comprehensive unit testing
+    - Interactive API documentation
     
     ## Sources
     - Real.gr

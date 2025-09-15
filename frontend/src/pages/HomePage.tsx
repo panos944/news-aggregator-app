@@ -164,20 +164,20 @@ const HomePage = () => {
               className="block"
             >
               {/* Featured image with text overlay */}
-              <div className="relative overflow-hidden rounded-lg">
+              <div className="relative overflow-hidden rounded-lg ny-sans">
                 <img 
                   src={mainHeroArticle.imageUrl}
                   alt={mainHeroArticle.title}
-                  className="w-full h-[75vh] md:h-[80vh] object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+                  className="w-full h-180 object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
                 />
                 
                 {/* Dark gradient overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                 
-                {/* Text Overlay on Image */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                  <div className="max-w-5xl">
-                    <div className="flex items-center gap-3 mb-6">
+                {/* Text Overlay on Image - Center Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center p-8 md:p-12">
+                  <div className="max-w-5xl text-center">
+                    <div className="flex items-center justify-center gap-3 mb-6">
                       <span className="ny-sans-medium text-xs text-white/90 uppercase tracking-widest bg-red-600 px-3 py-1 rounded">
                         {mainHeroArticle.source}
                       </span>
@@ -185,11 +185,11 @@ const HomePage = () => {
                       <time className="ny-sans text-sm text-white/80">{formatDate(mainHeroArticle.publishedAt)}</time>
                     </div>
                     
-                    <h1 className="ny-serif-bold text-2xl md:text-3xl lg:text-4xl leading-tight mb-4 text-white group-hover:text-white/90 transition-colors">
+                    <h1 className="ny-serif-bold text-3xl md:text-4xl lg:text-4xl leading-tight mb-4 text-white group-hover:text-white/90 transition-colors">
                       {mainHeroArticle.title}
                     </h1>
                     
-                    <p className="ny-lora text-base md:text-lg leading-relaxed text-white/90 max-w-3xl">
+                    <p className="ny-lora text-lg md:text-xl leading-relaxed text-white/90 max-w-4xl mx-auto">
                       {mainHeroArticle.description?.slice(0, 150)}...
                     </p>
                   </div>
@@ -200,7 +200,7 @@ const HomePage = () => {
         </div>
 
         {/* 3 Sub-Stories Below Hero */}
-        <div className="mb-20">
+        <div className="mb-20 ny-sans">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[subStory1, subStory2, subStory3].map((article) => (
               <article key={article.id || article.url} className="group">
