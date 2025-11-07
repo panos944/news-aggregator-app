@@ -45,26 +45,63 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Check for existing token on app start
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    const userStr = localStorage.getItem('auth_user');
-    
-    if (token && userStr) {
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('auth_token');
+      const userStr = localStorage.getItem('auth_user');
+
+      if (!token) {
+        setAuthState(prev => ({ ...prev, loading: false }));
+        return;
+      }
+
+      if (userStr) {
+        try {
+          const storedUser = JSON.parse(userStr) as User;
+          setAuthState({
+            isAuthenticated: true,
+            user: storedUser,
+            token,
+            loading: false,
+          });
+          return;
+        } catch (error) {
+          console.warn('Failed to parse stored user data. Attempting to refetch profile.', error);
+        }
+      }
+
       try {
-        const user = JSON.parse(userStr);
+        const profile = await authService.getProfile();
+
+        if (profile.success && profile.user) {
+          localStorage.setItem('auth_user', JSON.stringify(profile.user));
+          setAuthState({
+            isAuthenticated: true,
+            user: profile.user,
+            token,
+            loading: false,
+          });
+        } else {
+          authService.logout();
+          setAuthState({
+            isAuthenticated: false,
+            user: null,
+            token: null,
+            loading: false,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to restore authentication state from API.', error);
+        authService.logout();
         setAuthState({
-          isAuthenticated: true,
-          user,
-          token,
+          isAuthenticated: false,
+          user: null,
+          token: null,
           loading: false,
         });
-      } catch (error) {
-        // If parsing fails, clear invalid data
-        authService.logout();
-        setAuthState(prev => ({ ...prev, loading: false }));
       }
-    } else {
-      setAuthState(prev => ({ ...prev, loading: false }));
-    }
+    };
+
+    void initializeAuth();
   }, []);
 
   // Login function

@@ -16,7 +16,11 @@ function App() {
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route 
               path="/" 
-              element={<HomePage />}
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              }
             />
             <Route 
               path="/source/:sourceName" 
@@ -26,7 +30,14 @@ function App() {
                 </PrivateRoute>
               } 
             />
-            <Route path="/realplayer-admin" element={<RealPlayerAdmin />} />
+            <Route 
+              path="/realplayer-admin" 
+              element={
+                <PrivateRoute>
+                  <RealPlayerAdmin />
+                </PrivateRoute>
+              } 
+            />
           </Routes>
         </div>
       </Router>

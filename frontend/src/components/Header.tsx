@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, User, Menu, LogOut, Bell } from 'lucide-react';
+import { User, Menu, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
 import {
@@ -18,16 +18,17 @@ interface HeaderProps {
 
 const Header = ({ mostPopularArticles = [] }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/source/real');
+    navigate('/');
   };
 
+  const displayName = user ? ([user.firstName, user.lastName].filter(Boolean).join(' ') || user.email) : '';
+
   const navigationItems = [
-    { name: 'Real.gr', path: '/source/real' },
     { name: 'InStyle', path: '/source/instyle' },
     { name: 'Real Kiosk', path: '/source/realkiosk' },
     { name: 'RealPlayer', path: '/source/realplayer' },
@@ -53,32 +54,45 @@ const Header = ({ mostPopularArticles = [] }: HeaderProps) => {
               <div className="font-bold text-white flex items-center space-x-6 whitespace-nowrap">
                 <Link to="/" className="hover:text-yellow-500 transition-colors">Home</Link>
                 <span className="text-gray-300">|</span>
-                <Link to="/source/real" className="hover:text-yellow-500 transition-colors">Real.gr</Link>
-                <span className="text-gray-300">|</span>
                 <Link to="/source/instyle" className="hover:text-yellow-500 transition-colors">Instyle</Link>
                 <span className="text-gray-300">|</span>
                 <Link to="/source/realkiosk" className="hover:text-yellow-500 transition-colors">Real Kiosk</Link>
-                <span className="text-gray-300">|</span>
-                <Link to="/source/thecars" className="hover:text-yellow-500 transition-colors">The Cars</Link>
                 <span className="text-gray-300">|</span>
                 <Link to="/source/realplayer" className="hover:text-yellow-500 transition-colors">Realplayer</Link>
               </div>
             </div>
            
-            <div className="hidden lg:flex items-center space-x-2 flex-shrink-0 ml-auto">
-              <User size={18} className="text-yellow-500"/>
-              <span className="text-white text-sm whitespace-nowrap">
-                {user?.firstName} {user?.lastName}
-              </span>
-              
-              <span className="text-gray-300 mx-2">|</span>
-              <button 
-                onClick={handleLogout} 
-                className="flex items-center space-x-2 bg-red-600 text-white py-1 px-2 rounded text-xs hover:bg-red-700 transition-colors whitespace-nowrap"
-              >
-                <LogOut size={20}/>
-                <span>Αποσύνδεση</span>
-              </button>
+            <div className="hidden lg:flex items-center space-x-3 flex-shrink-0 ml-auto">
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="h-4 w-4 rounded-full bg-white/30 animate-pulse" />
+                  <div className="h-3 w-24 rounded bg-white/30 animate-pulse" />
+                </div>
+              ) : isAuthenticated && user ? (
+                <>
+                  <User size={18} className="text-yellow-500"/>
+                  <span className="text-white text-sm whitespace-nowrap">
+                    {displayName}
+                  </span>
+                  <span className="text-gray-300 mx-2">|</span>
+                  <button 
+                    type="button"
+                    onClick={handleLogout} 
+                    className="flex items-center space-x-2 bg-red-600 text-white py-1 px-2 rounded text-xs hover:bg-red-700 transition-colors whitespace-nowrap"
+                  >
+                    <LogOut size={20}/>
+                    <span>Αποσύνδεση</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/source/instyle"
+                  className="flex items-center space-x-2 border border-white/40 text-white py-1 px-3 rounded text-xs hover:bg-white/10 transition-colors whitespace-nowrap"
+                >
+                  <User size={18} className="text-yellow-500" />
+                  <span>Σύνδεση</span>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button - Fixed position on right */}
@@ -117,24 +131,46 @@ const Header = ({ mostPopularArticles = [] }: HeaderProps) => {
                       </Link>
                     ))}
                     
-                    {user && (
-                      <div className="pt-4 border-t border-white/20 space-y-4 flex flex-col items-center">
-                        <div className="flex items-center space-x-2">
-                          <User className="h-4 w-4 text-yellow-500" />
-                          <span className="text-sm font-medium text-white">
-                            {user.firstName} {user.lastName}
-                          </span>
+                    <div className="pt-4 border-t border-white/20 space-y-4 flex flex-col items-center">
+                      {loading ? (
+                        <div className="flex items-center space-x-3">
+                          <div className="h-4 w-4 rounded-full bg-white/30 animate-pulse" />
+                          <div className="h-4 w-24 rounded bg-white/30 animate-pulse" />
                         </div>
+                      ) : isAuthenticated && user ? (
+                        <>
+                          <div className="flex items-center space-x-2">
+                            <User className="h-4 w-4 text-yellow-500" />
+                            <span className="text-sm font-medium text-white">
+                              {displayName}
+                            </span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              handleLogout();
+                              setIsOpen(false);
+                            }}
+                            className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
+                          >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Αποσύνδεση
+                          </Button>
+                        </>
+                      ) : (
                         <Button
                           variant="outline"
-                          onClick={handleLogout}
-                          className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
+                          onClick={() => {
+                            setIsOpen(false);
+                            navigate('/source/instyle');
+                          }}
+                          className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-blue-900 transition-colors"
                         >
-                          <LogOut className="h-4 w-4 mr-2" />
-                          Αποσύνδεση
+                          <User className="h-4 w-4 mr-2" />
+                          Σύνδεση
                         </Button>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
@@ -147,7 +183,7 @@ const Header = ({ mostPopularArticles = [] }: HeaderProps) => {
       {mostPopularArticles.length > 0 && (
         <div className="w-full py-3 text-black" style={{ background: '#f5b400' }}>
           <div className="flex items-center gap-4 px-4">
-            <span className="ny-serif-bold text-sm flex-shrink-0 whitespace-nowrap text-black">Most Popular:</span>
+            <span className="ny-serif-bold text-base flex-shrink-0 whitespace-nowrap text-black">Most Popular:</span>
             <div className="flex-1 overflow-hidden">
               <div className="flex animate-scroll-fast whitespace-nowrap gap-8">
                 {[...mostPopularArticles, ...mostPopularArticles].map((article, index) => (
@@ -158,7 +194,7 @@ const Header = ({ mostPopularArticles = [] }: HeaderProps) => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 hover:text-blue-900 transition-colors flex-shrink-0"
                   >
-                    <span className="ny-serif-bold text-sm">
+                    <span className="ny-serif-bold text-base">
                       {(index % mostPopularArticles.length) + 1}.
                     </span>
                     <span className="ny-sans text-sm font-medium">

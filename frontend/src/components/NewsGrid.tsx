@@ -12,7 +12,7 @@ const NewsGrid = ({ articles, className }: NewsGridProps) => {
   if (!articles || articles.length === 0) {
     return (
       <div className="text-center py-24">
-        <p className="text-lg leading-relaxed text-neutral-500">No articles available.</p>
+        <p className="ny-lora text-xl leading-relaxed ny-text-muted">No articles available.</p>
       </div>
     );
   }

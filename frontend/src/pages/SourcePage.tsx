@@ -5,7 +5,7 @@ import NewsCard from "../components/NewsCard";
 import LatestNewsFeed from "../components/LatestNewsFeed";
 import SecondaryStory from "../components/SecondaryStory";
 import TopBar from "../components/TopBar";
-import Navbar from "../components/Navbar";
+import Header from "../components/Header";
 import { logos } from "../data/logo-data";
 
 const SourcePage = () => {
@@ -65,8 +65,8 @@ const SourcePage = () => {
   if (!sourceId) {
     return (
       <div className="container mx-auto px-4 my-8">
-        <h1 className="text-2xl font-bold">404</h1>
-        <p>No source specified</p>
+        <h1 className="ny-serif-bold text-3xl ny-text-primary">404</h1>
+        <p className="ny-sans ny-text-secondary">No source specified</p>
       </div>
     );
   }
@@ -74,9 +74,9 @@ const SourcePage = () => {
   if (!sourceName || !currentSource) {
     return (
       <div className="container mx-auto px-4 my-8">
-        <h1 className="text-2xl font-bold">404</h1>
-        <p>Sorry, this page does not exist</p>
-        <p>Available sources: real, instyle, realkiosk, thecars, realplayer</p>
+        <h1 className="ny-serif-bold text-3xl ny-text-primary">404</h1>
+        <p className="ny-sans ny-text-secondary">Sorry, this page does not exist</p>
+        <p className="ny-sans ny-text-muted">Available sources: real, instyle, realkiosk, thecars, realplayer</p>
       </div>
     );
   }
@@ -85,7 +85,7 @@ const SourcePage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-32">
-          <p>Loading articles for {sourceName}...</p>
+          <p className="ny-sans ny-text-secondary">Loading articles for {sourceName}...</p>
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ const SourcePage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-red-500">
-          <p>Error: {error}</p>
+          <p className="ny-sans">Error: {error}</p>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ const SourcePage = () => {
   return (
     <>
       <TopBar />
-      <Navbar />
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <img 
           src={currentSource.imageUrl} 
@@ -124,7 +124,7 @@ const SourcePage = () => {
               </div>
 
               <div className="lg:col-span-1">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
+                <h3 className="ny-serif-bold text-2xl ny-text-primary mb-4 border-b pb-2">
                   Περισσότερα
                 </h3>
                 <div className="flex flex-col">
@@ -145,7 +145,7 @@ const SourcePage = () => {
           </>
         ) : (
           <div className="text-center py-16">
-            <p className="text-xl text-gray-500">No articles found for {currentSource.name}</p>
+            <p className="ny-lora text-xl ny-text-muted">No articles found for {currentSource.name}</p>
           </div>
         )}
       </div>

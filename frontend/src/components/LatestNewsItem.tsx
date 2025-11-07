@@ -58,12 +58,12 @@ const LatestNewsItem = ({ article }: LatestNewsItemProps) => {
           </div>
 
           {/* Elegant Serif Headline */}
-          <h3 className="ny-serif-bold text-lg md:text-xl leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3">
+          <h3 className="ny-serif-bold text-xl md:text-2xl leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3">
             {article.title}
           </h3>
 
           {/* Body Text */}
-          <p className="ny-lora leading-relaxed ny-text-secondary line-clamp-2">
+          <p className="ny-lora text-base leading-relaxed ny-text-secondary line-clamp-2">
             {truncateText(article.description)}
           </p>
         </div>

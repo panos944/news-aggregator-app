@@ -21,6 +21,12 @@ export interface LoginResponse {
   };
 }
 
+export interface ProfileResponse {
+  success: boolean;
+  message: string;
+  user?: LoginResponse['user'];
+}
+
 export interface RegisterResponse {
   success: boolean;
   message: string;
@@ -110,8 +116,8 @@ class AuthService {
   /**
    * Get current user profile
    */
-  async getProfile(): Promise<ApiResponse> {
-    return this.MakeRequest<ApiResponse>('/auth/profile', {
+  async getProfile(): Promise<ProfileResponse> {
+    return this.MakeRequest<ProfileResponse>('/auth/profile', {
       method: 'GET',
     });
   }

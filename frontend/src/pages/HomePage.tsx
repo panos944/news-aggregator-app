@@ -90,57 +90,74 @@ const HomePage = () => {
 
   if (loading) return (
     <div className="container mx-auto p-4 text-center">
-      <div className="text-xl"></div>
+      <div className="ny-sans text-xl ny-text-secondary"></div>
     </div>
   );
   if (error) return (
     <div className="container mx-auto p-4 text-center text-red-500">
-      <div className="text-xl">Error: {error}</div>
-      <div className="mt-2">Make sure the backend is running on http://localhost:8000</div>
+      <div className="ny-sans text-xl">Error: {error}</div>
+      <div className="ny-sans mt-2">Make sure the backend is running on http://localhost:8000</div>
     </div>
   );
-  if (articles.length === 0) return <div className="container mx-auto p-4 text-center">No articles found.</div>;
+  if (articles.length === 0) return <div className="container mx-auto p-4 text-center ny-sans ny-text-secondary">No articles found.</div>;
 
-  // HERO ARTICLES - Taking 11 total (1 main + 3 sub-stories + 6 for most popular section + 1 buffer)
+  // HERO ARTICLES - Taking more for sidebar
   const heroArticles = articles.slice(0, 11);
   const [mainHeroArticle] = heroArticles; // Main hero article
   const [, subStory1, subStory2, subStory3] = heroArticles; // 3 sub-stories (skip index 0)
   const mostPopularArticles = articles.slice(5, 11); // Articles 5-10 for most popular
   
+  // Sidebar "Τελευταία Νέα" articles - 5 articles starting after hero article
+  const sidebarLatestArticles = articles.slice(11, 16);
+  
   // Create set of all used article URLs to filter out duplicates
   const usedTopArticleUrls = new Set([
     ...heroArticles.slice(0, 4).map(article => article.url), // Hero + 3 sub-stories
-    ...mostPopularArticles.map(article => article.url) // Most popular articles
+    ...mostPopularArticles.map(article => article.url), // Most popular articles
+    ...sidebarLatestArticles.map(article => article.url) // Sidebar latest articles
   ]);
   
   // Filter articles and backfill with other articles from the same sources
+  // Exclude "The Cars" and "Real.gr" sections
   const filteredArticlesBySource = Object.fromEntries(
-    Object.entries(articlesBySource).map(([sourceName, sourceArticles]) => {
-      // Filter out all used top articles (hero + sub-stories + most popular)
-      const filtered = sourceArticles.filter(article => !usedTopArticleUrls.has(article.url));
-      
-      // If we need more articles, backfill from the main articles array
-      const needed = sourceArticles.length - filtered.length;
-      if (needed > 0) {
-        const backfillArticles = articles
-          .filter(article => 
-            article.source === sourceName && 
-            !usedTopArticleUrls.has(article.url) &&
-            !sourceArticles.some(sa => sa.url === article.url)
-          )
-          .slice(0, needed);
+    Object.entries(articlesBySource)
+      .filter(([sourceName]) => sourceName !== 'The Cars' && sourceName !== 'Real.gr')
+      .map(([sourceName, sourceArticles]) => {
+        // Filter out all used top articles (hero + sub-stories + most popular)
+        const filtered = sourceArticles.filter(article => !usedTopArticleUrls.has(article.url));
         
-        return [sourceName, [...filtered, ...backfillArticles]];
-      }
-      
-      return [sourceName, filtered];
-    })
+        // If we need more articles, backfill from the main articles array
+        const needed = sourceArticles.length - filtered.length;
+        if (needed > 0) {
+          const backfillArticles = articles
+            .filter(article => 
+              article.source === sourceName && 
+              !usedTopArticleUrls.has(article.url) &&
+              !sourceArticles.some(sa => sa.url === article.url)
+            )
+            .slice(0, needed);
+          
+          return [sourceName, [...filtered, ...backfillArticles]];
+        }
+        
+        return [sourceName, filtered];
+      })
   );
-
-  // Calculate articles used in news sections and exclude them from feed
+  
+  // Collect all articles used in news sections (including Instyle, Real Kiosk, etc.)
   const articlesUsedInSections = Object.values(filteredArticlesBySource).flat();
+  const sectionArticleUrls = new Set(articlesUsedInSections.map(article => article.url));
+  
+  // Get Top Stories - articles from various sources that haven't been used yet
+  // Exclude articles from hero, sidebar, and all news sections (including Instyle)
+  const topStoriesArticles = articles
+    .filter(article => !usedTopArticleUrls.has(article.url) && !sectionArticleUrls.has(article.url))
+    .slice(0, 6);
+
+  // Calculate all used article URLs for the latest feed
   const allUsedArticleUrls = new Set([
     ...usedTopArticleUrls, // Hero + sub-stories + most popular
+    ...topStoriesArticles.map(article => article.url), // Top Stories articles
     ...articlesUsedInSections.map(article => article.url) // News section articles
   ]);
 
@@ -152,55 +169,108 @@ const HomePage = () => {
     <>
       <TopBar />
       <Header mostPopularArticles={mostPopularArticles} />
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-[1400px] mx-auto px-8 py-6">
 
-        {/* Main Hero Article - Title overlay on image */}
-        <div className="mb-16">
-          <article className="group">
-            <a 
-              href={mainHeroArticle.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block"
-            >
-              {/* Featured image with text overlay */}
-              <div className="relative overflow-hidden rounded-lg ny-sans">
-                <img 
-                  src={mainHeroArticle.imageUrl}
-                  alt={mainHeroArticle.title}
-                  className="w-full h-180 object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
-                />
-                
-                {/* Dark gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                
-                {/* Text Overlay on Image - Center Bottom */}
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center p-8 md:p-12">
-                  <div className="max-w-5xl text-center">
-                    <div className="flex items-center justify-center gap-3 mb-6">
-                      <span className="ny-sans-medium text-xs text-white/90 uppercase tracking-widest bg-red-600 px-3 py-1 rounded">
-                        {mainHeroArticle.source}
-                      </span>
-                      <span className="text-white/70">•</span>
-                      <time className="ny-sans text-sm text-white/80">{formatDate(mainHeroArticle.publishedAt)}</time>
+        {/* Main Hero Section with Sidebar */}
+        <div className="mb-12">
+          <div className="flex flex-col lg:flex-row gap-6 lg:h-[680px]">
+            {/* Main Hero Article - Left Side (grows to fill space) */}
+            <div className="flex-1 lg:max-w-[70%]">
+              <article className="group h-full">
+                <a 
+                  href={mainHeroArticle.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block h-full"
+                >
+                  {/* Featured image with text overlay */}
+                  <div className="relative overflow-hidden rounded-lg ny-sans h-full min-h-[350px]">
+                    <img 
+                      src={mainHeroArticle.imageUrl}
+                      alt={mainHeroArticle.title}
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+                    />
+                    
+                    {/* Dark gradient overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    
+                    {/* Text Overlay on Image - Center Bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center p-4 md:p-10">
+                      <div className="max-w-4xl text-center">
+                        <div className="flex items-center justify-center gap-2 mb-2 md:mb-4">
+                          <span className="ny-sans-medium text-xs text-white/90 uppercase tracking-widest bg-red-600 px-2 py-1 rounded">
+                            {mainHeroArticle.source}
+                          </span>
+                          <span className="text-white/70 hidden md:inline">•</span>
+                          <time className="ny-sans text-xs md:text-sm text-white/80 hidden md:inline">{formatDate(mainHeroArticle.publishedAt)}</time>
+                        </div>
+                        
+                        <h1 className="ny-serif-bold text-xl md:text-4xl lg:text-4xl leading-tight mb-2 md:mb-4 text-white group-hover:text-white/90 transition-colors">
+                          {mainHeroArticle.title}
+                        </h1>
+                        
+                        <p className="ny-lora text-base md:text-xl leading-relaxed text-white/90 hidden md:block">
+                          {mainHeroArticle.description?.slice(0, 150)}...
+                        </p>
+                      </div>
                     </div>
-                    
-                    <h1 className="ny-serif-bold text-3xl md:text-4xl lg:text-4xl leading-tight mb-4 text-white group-hover:text-white/90 transition-colors">
-                      {mainHeroArticle.title}
-                    </h1>
-                    
-                    <p className="ny-lora text-lg md:text-xl leading-relaxed text-white/90 max-w-4xl mx-auto">
-                      {mainHeroArticle.description?.slice(0, 150)}...
-                    </p>
                   </div>
+                </a>
+              </article>
+            </div>
+
+            {/* Τελευταία Νέα Sidebar - Right Side (30% width) */}
+            <div className="w-full lg:w-[30%] flex-shrink-0">
+              <div className="bg-white border border-gray-200 rounded-lg p-6 h-full flex flex-col">
+                <h2 className="ny-serif-bold text-2xl ny-text-primary mb-4 pb-2 border-b border-gray-200">
+                  Τελευταία Νέα
+                </h2>
+                
+                <div className="space-y-4 flex-1 overflow-y-auto">
+                  {sidebarLatestArticles.map((article, index) => (
+                    <article key={article.id || article.url} className="group">
+                      <a 
+                        href={article.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        {/* Article Number and Title */}
+                        <div className="flex gap-3">
+                          <span className="ny-serif-bold text-2xl ny-text-red flex-shrink-0">
+                            {index + 1}.
+                          </span>
+                          <div className="flex-1">
+                            <h3 className="ny-serif-bold text-base leading-tight ny-text-primary group-hover:ny-text-red transition-colors line-clamp-3 mb-2">
+                              {article.title}
+                            </h3>
+                            <div className="flex items-center gap-2">
+                              <span className="ny-sans text-xs ny-text-muted">
+                                {article.source}
+                              </span>
+                              <span className="ny-text-muted">•</span>
+                              <time className="ny-sans text-xs ny-text-muted">
+                                {formatDate(article.publishedAt)}
+                              </time>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                      
+                      {/* Separator line between articles */}
+                      {index < sidebarLatestArticles.length - 1 && (
+                        <div className="border-b border-gray-200 mt-4"></div>
+                      )}
+                    </article>
+                  ))}
                 </div>
               </div>
-            </a>
-          </article>
+            </div>
+          </div>
         </div>
 
         {/* 3 Sub-Stories Below Hero */}
-        <div className="mb-20 ny-sans">
+        <div className="mb-16 ny-sans">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[subStory1, subStory2, subStory3].map((article) => (
               <article key={article.id || article.url} className="group">
@@ -226,11 +296,11 @@ const HomePage = () => {
                     <time className="ny-sans text-xs ny-text-muted">{formatDate(article.publishedAt)}</time>
                   </div>
                   
-                  <h3 className="ny-serif-bold text-lg md:text-xl leading-tight mb-3 ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3">
+                  <h3 className="ny-serif-bold text-xl md:text-2xl leading-tight mb-3 ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3">
                     {article.title}
                   </h3>
                   
-                  <p className="ny-lora text-sm leading-relaxed ny-text-secondary line-clamp-2">
+                  <p className="ny-lora text-base leading-relaxed ny-text-secondary line-clamp-2">
                     {article.description?.slice(0, 100)}...
                   </p>
                 </a>
@@ -239,6 +309,68 @@ const HomePage = () => {
           </div>
         </div>
 
+        {/* Separator */}
+        <div className="my-12">
+          <div className="h-1 bg-blue-900 rounded-full"></div>
+        </div>
+
+        {/* Top Stories Section */}
+        <section className="mb-16">
+          {/* Section Header */}
+          <div className="text-center mb-8">
+            <h2 className="ny-serif-bold text-4xl md:text-5xl ny-text-primary mb-3">
+              Top Stories
+            </h2>
+            <div className="w-24 h-px bg-gray-300 mx-auto"></div>
+          </div>
+          
+          {/* Top Stories Grid - 3 columns, 2 rows */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {topStoriesArticles.map((article) => (
+              <article key={article.id || article.url} className="group">
+                <a 
+                  href={article.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  {/* Featured Image */}
+                  <div className="mb-3 overflow-hidden rounded-lg">
+                    <img 
+                      src={article.imageUrl}
+                      alt={article.title}
+                      className="w-full h-64 md:h-80 object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+                    />
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="space-y-2">
+                    {/* Meta Information */}
+                    <div className="flex items-center gap-3">
+                      <span className="ny-sans-medium text-xs ny-text-red uppercase tracking-widest">
+                        {article.source}
+                      </span>
+                      <span className="ny-text-muted">•</span>
+                      <time className="ny-sans text-xs ny-text-muted">
+                        {formatDate(article.publishedAt)}
+                      </time>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="ny-serif-bold text-xl md:text-2xl leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3">
+                      {article.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="ny-lora text-base leading-relaxed ny-text-secondary line-clamp-2">
+                      {article.description?.slice(0, 100)}...
+                    </p>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
 
         {/* News Sections by source */}
         {Object.keys(filteredArticlesBySource).map((sourceName) => (
@@ -254,22 +386,22 @@ const HomePage = () => {
 
       {/* Featured Article Section - Blue Background with Carousel */}
       {latestFeedArticles.length > 0 && (
-        <section className="bg-blue-900 text-white py-20">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="ny-serif-bold text-4xl md:text-5xl text-white mb-4">Editor's Pick</h2>
+        <section className="bg-blue-900 text-white py-12">
+          <div className="max-w-[1400px] mx-auto px-8">
+            <div className="text-center mb-10">
+              <h2 className="ny-serif-bold text-5xl md:text-6xl text-white mb-3">Editor's Pick</h2>
               <div className="w-24 h-px bg-yellow-500 mx-auto"></div>
             </div>
             
             {/* Main Featured Article */}
-            <article className="group max-w-4xl mx-auto mb-16">
+            <article className="group max-w-4xl mx-auto mb-10">
               <a 
                 href={latestFeedArticles[0].url} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                   {/* Featured Image */}
                   <div className="order-2 lg:order-1 overflow-hidden rounded-lg">
                     <img 
@@ -280,7 +412,7 @@ const HomePage = () => {
                   </div>
                   
                   {/* Content */}
-                  <div className="order-1 lg:order-2 space-y-6">
+                  <div className="order-1 lg:order-2 space-y-4">
                     <div className="flex items-center gap-3">
                       <span className="ny-sans-medium text-xs text-yellow-500 uppercase tracking-widest">
                         {latestFeedArticles[0].source}
@@ -295,7 +427,7 @@ const HomePage = () => {
                       {latestFeedArticles[0].title}
                     </h3>
                     
-                    <p className="ny-lora text-lg leading-relaxed text-white/90">
+                    <p className="ny-lora text-xl leading-relaxed text-white/90">
                       {latestFeedArticles[0].description?.slice(0, 180)}...
                     </p>
                   </div>
@@ -306,7 +438,7 @@ const HomePage = () => {
             {/* Carousel for Additional Articles */}
             {latestFeedArticles.length > 1 && (
               <div className="relative">
-                <h3 className="ny-serif-bold text-2xl text-white mb-8 text-center">More Editor's Picks</h3>
+                <h3 className="ny-serif-bold text-3xl text-white mb-6 text-center">More Editor's Picks</h3>
                 <Slider
                   {...{
                     dots: false,
@@ -347,18 +479,18 @@ const HomePage = () => {
                           rel="noopener noreferrer"
                           className="block"
                         >
-                          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 h-full transition-all duration-300 hover:bg-white/20">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 h-full transition-all duration-300 hover:bg-white/20">
                             {/* Image */}
-                            <div className="mb-4 overflow-hidden rounded-lg">
+                            <div className="mb-3 overflow-hidden rounded-lg">
                               <img 
                                 src={article.imageUrl}
                                 alt={article.title}
-                                className="w-full h-48 object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                                className="w-full h-64 object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
                               />
                             </div>
                             
                             {/* Content */}
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                               <div className="flex items-center gap-2">
                                 <span className="ny-sans-medium text-xs text-yellow-400 uppercase tracking-widest">
                                   {article.source}
@@ -369,11 +501,11 @@ const HomePage = () => {
                                 </time>
                               </div>
                               
-                              <h4 className="ny-serif-bold text-lg leading-tight text-white group-hover:text-yellow-400 transition-colors line-clamp-3">
+                              <h4 className="ny-serif-bold text-xl leading-tight text-white group-hover:text-yellow-400 transition-colors line-clamp-3">
                                 {article.title}
                               </h4>
                               
-                              <p className="ny-lora text-sm leading-relaxed text-white/80 line-clamp-2">
+                              <p className="ny-lora text-base leading-relaxed text-white/80 line-clamp-2">
                                 {article.description?.slice(0, 100)}...
                               </p>
                             </div>
@@ -389,9 +521,9 @@ const HomePage = () => {
         </section>
       )}
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-8">
         {/* Latest News Section - Blog Style */}
-        <div className="py-20">
+        <div className="py-16">
           <LatestNewsFeed articles={latestFeedArticles.slice(1)} />
         </div>
       </div>

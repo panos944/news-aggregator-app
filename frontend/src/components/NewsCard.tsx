@@ -66,13 +66,13 @@ const NewsCard = ({ article, hero }: NewsCardProps) => {
 
           {/* Elegant Serif Headline */}
           <h3 className={`ny-serif-bold leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors line-clamp-3 ${
-            hero ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
+            hero ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"
           }`}>
             {article.title}
           </h3>
 
           {/* Body Text */}
-          <p className="ny-lora leading-relaxed ny-text-secondary line-clamp-2">
+          <p className="ny-lora text-base leading-relaxed ny-text-secondary line-clamp-2">
             {truncateText(article.description, descriptionMaxLength)}
           </p>
         </div>

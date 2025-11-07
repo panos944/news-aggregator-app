@@ -10,7 +10,7 @@ const LatestNewsFeed = ({ articles }: LatestNewsFeedProps) => {
     <section className="bg-white">
       {/* Blog-style section title */}
       <div className="text-center mb-16">
-        <h2 className="ny-serif-bold text-3xl md:text-4xl ny-text-primary mb-4">
+        <h2 className="ny-serif-bold text-4xl md:text-5xl ny-text-primary mb-4">
           Latest Stories
         </h2>
         <div className="w-24 h-px bg-gray-300 mx-auto"></div>
@@ -54,12 +54,12 @@ const LatestNewsFeed = ({ articles }: LatestNewsFeedProps) => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="ny-serif-bold text-2xl md:text-3xl leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors">
+                  <h3 className="ny-serif-bold text-3xl md:text-4xl leading-tight ny-text-primary group-hover:ny-text-secondary transition-colors">
                     {article.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="ny-lora text-base leading-relaxed ny-text-secondary">
+                  <p className="ny-lora text-lg leading-relaxed ny-text-secondary">
                     {article.description?.slice(0, 150)}...
                   </p>
                   

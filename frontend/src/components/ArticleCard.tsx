@@ -43,8 +43,8 @@ const ArticleCard = ({ article, variant = 'standard', className }: ArticleCardPr
       imageWrapper: 'relative overflow-hidden aspect-[16/9] lg:aspect-[21/9]',
       image: 'w-full h-full object-cover object-top transition-all duration-300 group-hover:scale-105',
       content: 'p-8 lg:p-12',
-      title: 'font-serif text-3xl lg:text-4xl font-semibold text-black mb-6 line-clamp-2',
-      description: 'text-lg leading-relaxed text-charcoal mb-8 line-clamp-3',
+      title: 'ny-serif-bold text-4xl lg:text-5xl ny-text-primary mb-6 line-clamp-2',
+      description: 'ny-lora text-xl leading-relaxed ny-text-secondary mb-8 line-clamp-3',
       meta: 'flex items-center justify-between',
     },
     featured: {
@@ -53,8 +53,8 @@ const ArticleCard = ({ article, variant = 'standard', className }: ArticleCardPr
       imageWrapper: 'relative overflow-hidden aspect-[4/3]',
       image: 'w-full h-full object-cover object-top transition-all duration-300 group-hover:scale-105',
       content: 'p-6',
-      title: 'font-serif text-3xl font-semibold text-black mb-4 line-clamp-2',
-      description: 'text-lg leading-relaxed text-charcoal mb-6 line-clamp-2',
+      title: 'ny-serif-bold text-4xl ny-text-primary mb-4 line-clamp-2',
+      description: 'ny-lora text-xl leading-relaxed ny-text-secondary mb-6 line-clamp-2',
       meta: 'flex items-center justify-between',
     },
     standard: {
@@ -63,8 +63,8 @@ const ArticleCard = ({ article, variant = 'standard', className }: ArticleCardPr
       imageWrapper: 'relative overflow-hidden aspect-[4/3]',
       image: 'w-full h-full object-cover object-top transition-all duration-300 group-hover:scale-105',
       content: 'p-6',
-      title: 'font-serif text-3xl font-semibold text-black mb-3 line-clamp-2',
-      description: 'text-lg leading-relaxed text-charcoal mb-4 line-clamp-2',
+      title: 'ny-serif-bold text-4xl ny-text-primary mb-3 line-clamp-2',
+      description: 'ny-lora text-xl leading-relaxed ny-text-secondary mb-4 line-clamp-2',
       meta: 'flex items-center justify-between',
     },
   };
@@ -106,12 +106,12 @@ const ArticleCard = ({ article, variant = 'standard', className }: ArticleCardPr
           <div className={styles.meta}>
             <Badge 
               variant="outline" 
-              className={cn("text-xs font-medium", getSourceColor(article.source))}
+              className={cn("ny-sans-medium text-xs uppercase tracking-widest", getSourceColor(article.source))}
             >
               {article.source}
             </Badge>
             
-            <div className="flex items-center text-sm text-neutral-500">
+            <div className="flex items-center ny-sans text-sm ny-text-muted">
               <Clock className="h-4 w-4 mr-2" />
               <time dateTime={article.publishedAt}>
                 {formatDate(article.publishedAt)}
